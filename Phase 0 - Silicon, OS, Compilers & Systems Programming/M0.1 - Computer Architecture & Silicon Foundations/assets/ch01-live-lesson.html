@@ -1,0 +1,1361 @@
+<!doctype html>
+<html lang="en" data-style="editorial" data-artifact="ch01-bits-to-utf8">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<meta name="description" content="Chapter 1 interactive live lesson: Binary, Hex, Bit-Masking, Two's Complement, Overflow, ASCII & UTF-8." />
+<title>Ch 1: Binary, Hex, Two's Complement, Overflow, ASCII &amp; UTF-8 · Live Lesson</title>
+<style>
+/* ==========================================================================
+   BASE ARCHIFY TOKENS & MULTI-STYLE THEME SYSTEM (Clean / Editorial / Product / Swiss)
+   ========================================================================== */
+:root {
+  color-scheme: light;
+  --paper: #f4f5f7; --panel: #fff; --surface: #fff; --sunk: #f6f7f9; --zebra: #f8f9fa;
+  --ink: #111318; --secondary: #2c3038; --muted: #5a616e; --faint: #8e96a3;
+  --rule: #e5e7eb; --rule-strong: #d3d7dd;
+  --accent: #2457d6; --accent-soft: #eaf0fd; --accent-ink: #1b46b4; --marker: #dbe6fd;
+  --good: #13834b; --good-soft: #e8f5ee; --caution: #b26a00; --caution-soft: #fdf3e2;
+  --bad: #c4321f; --bad-soft: #fcebe8; --violet: #6a4fc8; --violet-soft: #f0ecfb;
+  --code: #f6f7f9; --badge: #111318; --badge-ink: #fff;
+  --shadow: 0 1px 2px rgb(16 24 40/.04), 0 1px 3px rgb(16 24 40/.03);
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", system-ui, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+  --mono: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* Stage SVG semantic tokens (Light mode high-contrast drafting palette) */
+  --stg-bg: #f1f5f9; --stg-card: #ffffff; --stg-ink: #0f172a; --stg-sub: #334155;
+  --stg-muted: #64748b; --stg-border: #cbd5e1; --stg-track: #e2e8f0;
+  --stg-em: #047857; --stg-em-bg: #d1fae5; --stg-em-ink: #064e3b;
+  --stg-cy: #0369a1; --stg-cy-bg: #e0f2fe; --stg-cy-ink: #0c4a6e;
+  --stg-vi: #6d28d9; --stg-vi-bg: #ede9fe; --stg-vi-ink: #4c1d95;
+  --stg-rd: #be123c; --stg-rd-bg: #ffe4e6; --stg-rd-ink: #881337;
+  --stg-am: #b45309; --stg-am-bg: #fef3c7; --stg-am-ink: #78350f;
+}
+
+:root[data-theme=dark] {
+  color-scheme: dark;
+  --paper: #0c0d10; --panel: #15171c; --surface: #15171c; --sunk: #1b1e24; --zebra: #191c21;
+  --ink: #f1f3f6; --secondary: #cfd3da; --muted: #9aa1ae; --faint: #676e7a;
+  --rule: #262a31; --rule-strong: #343943;
+  --accent: #7aa2ff; --accent-soft: #18223a; --accent-ink: #a3bfff; --marker: #24345c;
+  --good: #5cc98d; --good-soft: #122a1e; --caution: #e9b04f; --caution-soft: #2e2412;
+  --bad: #f2806f; --bad-soft: #331a17; --violet: #a994f5; --violet-soft: #221d36;
+  --code: #1b1e24; --badge: #f1f3f6; --badge-ink: #111318;
+  --shadow: 0 1px 2px rgb(0 0 0/.35);
+
+  --stg-bg: #0b1120; --stg-card: #131c31; --stg-ink: #f8fafc; --stg-sub: #cbd5e1;
+  --stg-muted: #94a3b8; --stg-border: #334155; --stg-track: #162036;
+  --stg-em: #34d399; --stg-em-bg: #064e3b; --stg-em-ink: #a7f3d0;
+  --stg-cy: #38bdf8; --stg-cy-bg: #0c4a6e; --stg-cy-ink: #bae6fd;
+  --stg-vi: #a78bfa; --stg-vi-bg: #312e81; --stg-vi-ink: #ddd6fe;
+  --stg-rd: #fb7185; --stg-rd-bg: #3b0a1b; --stg-rd-ink: #fda4af;
+  --stg-am: #fbbf24; --stg-am-bg: #451a03; --stg-am-ink: #fde68a;
+}
+
+/* Style variants matching Archify template: Editorial, Product, Swiss */
+:root[data-style=editorial] {
+  --paper: #f6f2ea; --panel: #fbf8f2; --surface: #fbf8f2; --sunk: #f1ece2; --zebra: #f3eee5; --code: #f1ece2;
+  --ink: #1d1a16; --secondary: #3a352e; --muted: #70675c; --faint: #a39a8e;
+  --rule: #e4dccf; --rule-strong: #d4c9b8; --accent: #9c2f1f; --accent-soft: #f4e6df; --accent-ink: #86261a;
+  --badge: #1d1a16; --badge-ink: #fbf8f2; --shadow: none;
+  --stg-bg: #efe8dc; --stg-card: #fbf8f2; --stg-border: #cabda9; --stg-track: #e4dbc9;
+}
+:root[data-style=product] {
+  --paper: #f3f4f8; --panel: #fff; --surface: #fff; --sunk: #f5f6fb; --zebra: #f7f8fc; --code: #f5f6fb;
+  --ink: #0b0d12; --secondary: #272b35; --muted: #626a7b; --faint: #99a0ae;
+  --rule: #e7e9f0; --rule-strong: #d7dbe6; --accent: #5b4bf5; --accent-soft: #f1efff; --accent-ink: #4a3be0;
+  --badge: #5b4bf5; --badge-ink: #fff;
+  --shadow: 0 1px 2px rgb(16 24 40/.04), 0 8px 24px rgb(16 24 40/.06);
+}
+:root[data-style=swiss] {
+  --control-border: #d4d4d4; --paper: #fff; --panel: #fff; --surface: #fff; --sunk: #f4f4f4; --zebra: #f7f7f7; --code: #f4f4f4;
+  --ink: #000; --secondary: #1f1f1f; --muted: #5e5e5e; --faint: #9a9a9a;
+  --rule: #e6e6e6; --rule-strong: #000; --accent: #ff4f00; --accent-soft: #fff0e8; --accent-ink: #d94300;
+  --badge: #000; --badge-ink: #fff; --shadow: none;
+  --stg-bg: #f4f4f4; --stg-card: #ffffff; --stg-border: #1f1f1f; --stg-track: #e5e5e5;
+}
+
+:root[data-style=editorial][data-theme=dark] {
+  --paper: #171512; --panel: #1d1a16; --surface: #1d1a16; --sunk: #24211c; --zebra: #211e19; --code: #24211c;
+  --ink: #f2ece2; --secondary: #d8d0c4; --muted: #a1978a; --faint: #6f675d;
+  --rule: #2e2a24; --rule-strong: #3d372f; --accent: #e0806b; --accent-soft: #2e1d18; --accent-ink: #f0a08c;
+  --badge: #f2ece2; --badge-ink: #171512;
+  --stg-bg: #13110e; --stg-card: #1e1a15; --stg-border: #40382e; --stg-track: #26211b;
+}
+:root[data-style=product][data-theme=dark] {
+  --paper: #0d0e14; --panel: #161824; --surface: #161824; --sunk: #1c1f2e; --zebra: #1a1c29; --code: #1c1f2e;
+  --ink: #f2f3f8; --secondary: #cfd2de; --muted: #8e93a8; --faint: #5d6278;
+  --rule: #262a3b; --rule-strong: #333850; --accent: #8d80ff; --accent-soft: #211e40; --accent-ink: #b3aaff;
+  --badge: #8d80ff; --badge-ink: #0d0e14; --shadow: 0 1px 2px rgb(0 0 0/.4);
+}
+:root[data-style=swiss][data-theme=dark] {
+  --control-border: #363636; --paper: #0a0a0a; --panel: #0a0a0a; --surface: #0a0a0a; --sunk: #161616; --zebra: #121212; --code: #161616;
+  --ink: #fff; --secondary: #e6e6e6; --muted: #9a9a9a; --faint: #5c5c5c;
+  --rule: #262626; --rule-strong: #fff; --accent: #ff6a1f; --accent-soft: #2a1508; --accent-ink: #ff8a4d;
+  --badge: #fff; --badge-ink: #000;
+  --stg-bg: #0d0d0d; --stg-card: #161616; --stg-border: #3a3a3a; --stg-track: #242424;
+}
+
+/* ==========================================================================
+   BASE TYPOGRAPHY & ARCHIFY SHELL / MASTHEAD / BOARD
+   ========================================================================== */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--secondary); font: 14.5px/1.7 var(--sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, ul, ol, figure { margin: 0; }
+strong, b { color: var(--ink); font-weight: 600; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+code, pre { font-family: var(--mono); }
+code { font-size: .86em; background: var(--code); border: 1px solid var(--rule); padding: 0 5px; border-radius: 5px; color: var(--ink); }
+button { font: inherit; color: inherit; cursor: pointer; border: 1px solid var(--control-border, var(--rule-strong)); border-radius: 8px; background: var(--panel); padding: 5px 11px; line-height: 1.4; transition: background .15s, border-color .15s, color .15s; }
+button:hover { border-color: var(--faint); color: var(--ink); background: var(--sunk); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.shell { width: min(1300px, calc(100% - 48px)); margin: auto; padding-bottom: 48px; }
+.masthead { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 30px 0 20px; border-bottom: 1px solid var(--rule); margin-bottom: 20px; flex-wrap: wrap; }
+.mast-left { max-width: 820px; }
+.crumb { font-size: 12px; font-weight: 600; color: var(--accent-ink); letter-spacing: .02em; text-transform: uppercase; margin-bottom: 4px; }
+h1 { font: 700 28px/1.3 var(--sans); color: var(--ink); letter-spacing: -.015em; }
+.mast-sub { margin-top: 6px; font-size: 14px; color: var(--muted); }
+
+.tools { display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
+.tools button { font-size: 12.5px; line-height: 1; color: var(--secondary); }
+.theme-controls { display: flex; align-items: center; height: 32px; border: 1px solid var(--control-border, var(--rule-strong)); border-radius: 8px; padding: 2px; gap: 2px; background: var(--panel); }
+.theme-controls button { height: 26px; border: 0; border-radius: 6px; padding: 0 10px; background: none; color: var(--muted); }
+.theme-controls button:hover { color: var(--ink); background: var(--sunk); }
+.theme-controls button[aria-pressed=true] { background: var(--sunk); color: var(--ink); font-weight: 600; box-shadow: inset 0 0 0 1px var(--rule); }
+.tool-menu { position: relative; }
+.tool-button { display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 11px; }
+.tool-icon { width: 15px; height: 15px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.style-swatch { width: 14px; height: 14px; flex-shrink: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px rgb(0 0 0/.15); }
+.style-swatch[data-swatch=clean] { background: linear-gradient(135deg, #f4f5f7 50%, #2457d6 50%); }
+.style-swatch[data-swatch=editorial] { background: linear-gradient(135deg, #f6f2ea 50%, #9c2f1f 50%); }
+.style-swatch[data-swatch=product] { background: linear-gradient(135deg, #f1efff 50%, #5b4bf5 50%); }
+.style-swatch[data-swatch=swiss] { background: linear-gradient(135deg, #fff 50%, #ff4f00 50%); }
+.menu-options { position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; min-width: 156px; padding: 4px; background: var(--panel); border: 1px solid var(--control-border, var(--rule-strong)); border-radius: 10px; box-shadow: 0 12px 32px rgb(0 0 0/.18); }
+.menu-options button { display: flex; align-items: center; gap: 9px; width: 100%; height: 32px; padding: 0 10px; border: 0; border-radius: 6px; background: none; text-align: left; }
+.menu-options button span:not(.style-swatch) { flex: 1; }
+.menu-options button:hover { background: var(--sunk); color: var(--ink); }
+.style-options .tool-icon { width: 14px; height: 14px; color: var(--accent); visibility: hidden; }
+.style-options [aria-checked=true] { color: var(--ink); font-weight: 600; }
+.style-options [aria-checked=true] .tool-icon { visibility: visible; }
+
+/* Board Grid & Panels */
+.board { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.span4 { grid-column: span 4; } .span5 { grid-column: span 5; } .span6 { grid-column: span 6; }
+.span7 { grid-column: span 7; } .span8 { grid-column: span 8; } .span12 { grid-column: span 12; }
+.panel { min-width: 0; display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+.panel-head { display: flex; gap: 10px; align-items: center; padding: 13px 20px; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
+.panel-id { flex-shrink: 0; min-width: 24px; height: 24px; padding: 0 6px; border-radius: 6px; display: grid; place-items: center; background: var(--badge); color: var(--badge-ink); font: 600 12px/1 var(--sans); text-decoration: none; }
+.panel-head h2 { font: 600 16px/1.4 var(--sans); color: var(--ink); flex: 1; min-width: 180px; }
+.panel-body { padding: 16px 20px 20px; flex: 1; display: flex; flex-direction: column; gap: 14px; }
+.watch-btn { font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 30%, var(--rule)); border-radius: 999px; padding: 4px 11px; }
+.watch-btn:hover { background: var(--accent); color: var(--badge-ink); border-color: var(--accent); }
+
+/* Answer & Conclusion */
+.answer-id { background: var(--accent); color: var(--badge-ink); }
+.verdict { padding: 12px 16px; border-radius: 8px; background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); font: 600 16.5px/1.6 var(--sans); color: var(--ink); }
+.verdict strong { font-weight: 700; color: var(--accent-ink); }
+.reasons { list-style: none; padding: 0; counter-reset: reason; display: grid; gap: 6px; }
+.reasons li { counter-increment: reason; position: relative; padding: 3px 0 3px 26px; font-size: 14px; color: var(--secondary); }
+.reasons li::before { content: counter(reason); position: absolute; left: 0; top: 7px; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font: 700 10.5px/1 var(--sans); color: var(--muted); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--rule-strong); }
+.answer-scope { padding: 10px 20px 12px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); }
+.scope-chip { display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 999px; background: var(--sunk); border: 1px solid var(--rule); color: var(--secondary); font-size: 11.5px; }
+
+/* Steps, Callouts, Tables, Snippets, Checklists */
+.steps { list-style: none; padding: 0; counter-reset: step; }
+.steps li { counter-increment: step; position: relative; padding: 0 0 14px 36px; }
+.steps li:last-child { padding-bottom: 0; }
+.steps li::before { content: counter(step); position: absolute; left: 0; top: 1px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font: 600 11.5px/1 var(--sans); color: var(--ink); background: var(--panel); border: 1.5px solid var(--rule-strong); z-index: 1; }
+.steps li:not(:last-child)::after { content: ""; position: absolute; left: 10.5px; top: 24px; bottom: 2px; width: 1.5px; background: var(--rule); }
+.steps b { display: block; font-size: 14.5px; color: var(--ink); margin-bottom: 2px; }
+.steps p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+
+.callout { padding: 11px 16px; background: var(--sunk); border-radius: 8px; box-shadow: inset 3px 0 0 var(--faint); font-size: 13.5px; }
+.callout h3 { font-size: 13.5px; color: var(--ink); margin-bottom: 3px; }
+.callout.warning { background: var(--caution-soft); box-shadow: inset 3px 0 0 var(--caution); }
+.callout.open-question { background: var(--violet-soft); box-shadow: inset 3px 0 0 var(--violet); }
+
+.table-scroll { overflow: auto; }
+table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13px; }
+th, td { padding: 8px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); }
+thead th { font-size: 11.5px; font-weight: 600; color: var(--muted); border-bottom: 1.5px solid var(--rule-strong); white-space: nowrap; }
+tbody tr:nth-child(even) > * { background: var(--zebra); }
+.assessment { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; font-size: 12.5px; }
+.assessment::before { width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center; font: 700 9.5px/1 var(--sans); color: #fff; }
+.assessment.good { color: var(--good); } .assessment.good::before { content: "✓"; background: var(--good); }
+.assessment.caution { color: var(--caution); } .assessment.caution::before { content: "!"; background: var(--caution); }
+.assessment.bad { color: var(--bad); } .assessment.bad::before { content: "✕"; background: var(--bad); }
+
+.snippet { border: 1px solid var(--rule); border-radius: 8px; background: var(--code); overflow: hidden; }
+.snippet-head { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--rule); font-size: 12px; color: var(--muted); background: var(--panel); }
+.snippet pre { margin: 0; padding: 12px 14px; font-size: 12.5px; line-height: 1.6; overflow: auto; color: var(--ink); }
+
+.checklist { list-style: none; padding: 0; }
+.checklist li + li { border-top: 1px dashed var(--rule); }
+.checklist label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; cursor: pointer; font-size: 14px; }
+.checklist input { appearance: none; flex-shrink: 0; width: 17px; height: 17px; margin: 3px 0 0; border: 1.5px solid var(--rule-strong); border-radius: 5px; background: var(--panel); display: grid; place-items: center; }
+.checklist input::after { content: ""; width: 5px; height: 9px; margin-top: -2px; border: solid var(--panel); border-width: 0 2px 2px 0; transform: rotate(45deg) scale(0); transition: transform .12s; }
+.checklist input:checked { background: var(--good); border-color: var(--good); }
+.checklist input:checked::after { transform: rotate(45deg) scale(1); }
+.checklist input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--faint); }
+
+/* ==========================================================================
+   STYLE OVERRIDES (Editorial, Product, Swiss) — matches Archify grammar
+   ========================================================================== */
+[data-style=editorial] h1, [data-style=editorial] .panel-head h2, [data-style=editorial] .verdict { font-family: var(--serif); }
+[data-style=editorial] .masthead { border-bottom: 2px solid var(--ink); }
+[data-style=editorial] .panel { border: 0; border-top: 1px solid var(--rule-strong); border-radius: 0; background: transparent; box-shadow: none; }
+[data-style=editorial] .panel-head { border-bottom: 0; padding: 14px 4px 4px; }
+[data-style=editorial] .panel-head h2 { font-size: 18px; font-weight: 700; }
+[data-style=editorial] .panel-id, [data-style=editorial] .answer-id { background: none; color: var(--accent); font: 700 16px/1 var(--serif); min-width: 0; padding: 0; }
+[data-style=editorial] .panel-body { padding: 10px 4px 16px; }
+[data-style=editorial] .verdict { background: none; border-radius: 0; font-size: 19px; padding: 0 0 0 16px; }
+
+[data-style=product] h1 { font-weight: 800; letter-spacing: -.025em; }
+[data-style=product] .panel { border-radius: 18px; border-color: transparent; }
+[data-style=product] .panel-id { border-radius: 8px; background: var(--accent-soft); color: var(--accent-ink); }
+[data-style=product] .answer-id { background: var(--accent); color: var(--badge-ink); }
+[data-style=product] .answer-panel { background: linear-gradient(180deg, var(--accent-soft), var(--panel) 70%); border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); }
+
+[data-style=swiss] body { font-family: "Helvetica Neue", Arial, sans-serif; }
+[data-style=swiss] h1 { font-size: 32px; font-weight: 800; letter-spacing: -.03em; }
+[data-style=swiss] .masthead { border-bottom: 4px solid var(--ink); }
+[data-style=swiss] .panel { border: 0; border-top: 2px solid var(--ink); border-radius: 0; box-shadow: none; }
+[data-style=swiss] .panel-head { border-bottom: 0; padding: 12px 0 4px; align-items: baseline; }
+[data-style=swiss] .panel-id, [data-style=swiss] .answer-id { background: none; color: var(--accent); font: 800 26px/1 "Helvetica Neue", Arial, sans-serif; min-width: 0; height: auto; padding: 0 6px 0 0; }
+[data-style=swiss] .panel-body { padding: 8px 0 12px; }
+[data-style=swiss] .verdict { background: none; box-shadow: none; padding: 0; font-size: 20px; }
+[data-style=swiss] .steps li::before { border-radius: 0; border-color: var(--ink); }
+[data-style=swiss] :is(button, .tool-button, .theme-controls, .theme-controls button, .menu-options, .theater-wrap, .beat-dot, .mini-lab, .quiz-box, .scope-chip, .callout, .snippet) { border-radius: 2px !important; }
+
+/* ==========================================================================
+   LIVE ILLUSTRATED LESSON THEATER (Animated Teacher + Interactive Sandbox)
+   ========================================================================== */
+.theater-wrap { background: var(--panel); border: 1px solid var(--rule-strong); border-radius: 12px; overflow: hidden; }
+.scene-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; background: var(--sunk); border-bottom: 1px solid var(--rule); }
+.tab-btn { font-size: 12.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: var(--panel); color: var(--secondary); border: 1px solid var(--rule-strong); }
+.tab-btn.active { background: var(--accent); color: var(--badge-ink); border-color: var(--accent); }
+
+.narrator-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 18px; border-bottom: 1px solid var(--rule); flex-wrap: wrap; background: color-mix(in srgb, var(--accent-soft) 35%, var(--panel)); }
+.narrator-step { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent-ink); }
+.narrator-msg { font-size: 15.5px; font-weight: 700; color: var(--ink); margin-top: 2px; }
+.narrator-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.beat-dots { display: flex; gap: 5px; flex-wrap: wrap; }
+.bdot { font-size: 11.5px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--rule-strong); background: var(--panel); color: var(--secondary); }
+.bdot.active { background: var(--accent-soft); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+
+.stage-box { background: var(--stg-bg); display: grid; place-items: center; border-bottom: 1px solid var(--rule); padding: 6px; }
+svg.svg-stage { width: 100%; max-width: 980px; height: auto; display: block; font-family: var(--sans); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.clickable { cursor: pointer; }
+.clickable:hover .hit { stroke-width: 3px; }
+@keyframes dash-flow { to { stroke-dashoffset: -24; } }
+.march { stroke-dasharray: 6 6; animation: dash-flow 0.8s linear infinite; }
+
+.transport-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 16px; background: var(--sunk); border-bottom: 1px solid var(--rule); }
+.tbtn { font-size: 12.5px; font-weight: 600; padding: 5px 11px; }
+.tbtn.primary { background: var(--accent); color: var(--badge-ink); border-color: var(--accent); }
+.tbtn.active-spd { background: var(--accent-soft); color: var(--accent-ink); border-color: var(--accent); }
+.scrubber { flex: 1; min-width: 140px; accent-color: var(--accent); cursor: pointer; }
+.time-readout { font-family: var(--mono); font-size: 12px; color: var(--muted); min-width: 92px; text-align: right; font-variant-numeric: tabular-nums; }
+
+.interactive-dock { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; background: var(--panel); font-size: 13px; }
+.interactive-dock label { font-weight: 600; color: var(--good); }
+.dock-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.dock-controls input { background: var(--code); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 6px; padding: 4px 10px; font-family: var(--mono); font-size: 13px; width: 150px; }
+
+/* Inline Interactive Mini-Labs inside Chapter Panels */
+.mini-lab { background: var(--sunk); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; display: grid; gap: 10px; }
+.mini-lab-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mini-lab input[type=number], .mini-lab input[type=text], .mini-lab select { background: var(--panel); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 6px; padding: 5px 9px; font-family: var(--mono); font-size: 13px; }
+.bit-row { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; }
+.bit-tile { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 7px; border: 1px solid var(--rule-strong); background: var(--panel); font-family: var(--mono); }
+.bit-tile.on { background: var(--good-soft); border-color: var(--good); color: var(--good); font-weight: 700; }
+.bit-tile small { font-size: 10px; color: var(--muted); }
+.readout-pills { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--mono); font-size: 12.5px; }
+.rpill { padding: 3px 9px; border-radius: 6px; background: var(--panel); border: 1px solid var(--rule-strong); color: var(--ink); font-weight: 600; }
+
+/* Quiz */
+.quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.quiz-box { background: var(--sunk); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; display: grid; gap: 8px; }
+.quiz-ans { font-size: 13px; padding: 8px 10px; border-radius: 6px; background: var(--good-soft); color: var(--ink); border-left: 3px solid var(--good); }
+
+/* Responsive */
+@media (max-width: 980px) {
+  .span4, .span5, .span6, .span7, .span8 { grid-column: span 12; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .march { animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="mast-left">
+      <div class="crumb">Phase 0 · M0.1 Computer Architecture &amp; Silicon Foundations · Chapter 1</div>
+      <h1>How do ON/OFF switches become numbers, negative values, and emojis?</h1>
+      <p class="mast-sub">An interactive step-by-step live classroom + complete visual reference guide (cleanly switchable between System/Light/Dark and Clean/Editorial/Product/Swiss views).</p>
+    </div>
+    <div class="tools" role="toolbar" aria-label="Appearance controls">
+      <div class="theme-controls" role="group" aria-label="Theme">
+        <button type="button" data-theme-choice="auto" aria-pressed="true">System</button>
+        <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      </div>
+      <div class="tool-menu style-menu">
+        <button type="button" class="tool-button" data-style-toggle aria-haspopup="menu" aria-expanded="false" aria-label="Style">
+          <span class="style-swatch" data-swatch="editorial"></span>
+          <span data-style-label>Editorial</span>
+          <svg class="tool-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 6.5 8 10l3.5-3.5"/></svg>
+        </button>
+        <div class="menu-options style-options" role="menu" aria-label="Style" hidden>
+          <button type="button" role="menuitemradio" aria-checked="false" data-style-choice="clean"><span class="style-swatch" data-swatch="clean"></span><span>Clean</span><svg class="tool-icon" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></button>
+          <button type="button" role="menuitemradio" aria-checked="true" data-style-choice="editorial"><span class="style-swatch" data-swatch="editorial"></span><span>Editorial</span><svg class="tool-icon" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-style-choice="product"><span class="style-swatch" data-swatch="product"></span><span>Product</span><svg class="tool-icon" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></button>
+          <button type="button" role="menuitemradio" aria-checked="false" data-style-choice="swiss"><span class="style-swatch" data-swatch="swiss"></span><span>Swiss</span><svg class="tool-icon" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="board">
+    <!-- ================================================================
+         PANEL A: EXECUTIVE ANSWER FIRST (Full 12-col banner or side-by-side)
+         ================================================================ -->
+    <section class="panel answer-panel span12" id="answer">
+      <header class="panel-head">
+        <span class="panel-id answer-id" aria-hidden="true">A</span>
+        <h2>The Core Idea in 30 Seconds</h2>
+      </header>
+      <div class="panel-body">
+        <p class="verdict">Computers only store <code>1</code> and <code>0</code> wall switches. <strong>The rule you choose when reading them decides</strong> whether <code>11011011</code> means <code>219</code>, <code>-37</code>, or part of an emoji.</p>
+        <ol class="reasons">
+          <li><strong>Binary &amp; Hex:</strong> 1 light switch = 1 bit (<code>0</code> or <code>1</code>); 8 switches = 1 byte (<code>256</code> patterns). Hex bundles 4 switches per digit (<code>0–F</code>) so 1 byte is always 2 tidy symbols (<code>0xDB</code>).</li>
+          <li><strong>Bit-Masking:</strong> Placing a stencil (<code>&amp; mask</code>) with <code>0</code> (block) and <code>1</code> (open window) isolates packed values cleanly in 1 CPU cycle.</li>
+          <li><strong>Two's Complement &amp; Overflow:</strong> Signed numbers wrap around like a car odometer backward from <code>0000</code> → <code>1111</code> (<code>-1</code>); crossing the top limit snaps positive into negative.</li>
+          <li><strong>UTF-8 Envelopes:</strong> Assigns every world character a Unicode ID (<code>U+...</code>) and packs it into 1–4 smart byte envelopes—English stays compact at 1 byte, emojis travel intact in 4 bytes.</li>
+        </ol>
+      </div>
+      <div class="answer-scope">
+        <span style="font-weight:600">Applies to:</span>
+        <span class="scope-chip">Decimal ↔ Binary ↔ Octal ↔ Hex</span>
+        <span class="scope-chip">Bitwise &amp;, |, ^, ~, &lt;&lt;, &gt;&gt;</span>
+        <span class="scope-chip">Two's Complement &amp; AI int8/int32</span>
+        <span class="scope-chip">ASCII · Unicode · UTF-8</span>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         PANEL ★: LIVE ANIMATED ILLUSTRATED CLASSROOM (4 SCENES)
+         ================================================================ -->
+    <section class="panel span12" id="live-theater">
+      <header class="panel-head">
+        <span class="panel-id" style="background:var(--good);color:#fff" aria-hidden="true">▶</span>
+        <h2>Live Illustrated Teacher (Auto-Play · Pause · Step-by-Step · Interactive)</h2>
+        <a class="watch-btn" href="./ch01-infographic-video.mp4" target="_blank" rel="noopener">🎬 Narrated AI Tutor Video (3m 33s MP4)</a>
+      </header>
+      <div class="panel-body" style="padding:12px">
+        <div class="theater-wrap">
+          <div class="scene-tabs" id="scene-tabs">
+            <button type="button" class="tab-btn active" onclick="selectScene(0)">1. Switches → Binary &amp; Hex</button>
+            <button type="button" class="tab-btn" onclick="selectScene(1)">2. Cardboard Stencil (&amp; Mask)</button>
+            <button type="button" class="tab-btn" onclick="selectScene(2)">3. Odometer &amp; Overflow</button>
+            <button type="button" class="tab-btn" onclick="selectScene(3)">4. ASCII → Unicode → UTF-8</button>
+          </div>
+
+          <div class="narrator-bar">
+            <div style="flex:1 1 380px">
+              <div class="narrator-step" id="narr-step">Step 1 · One Wall Switch = 1 Bit</div>
+              <div class="narrator-msg" id="narr-msg">Loading live illustration…</div>
+              <div class="narrator-sub" id="narr-sub">Use Play, Pause, Prev Step, or Next Step anytime.</div>
+            </div>
+            <div class="beat-dots" id="beat-dots"></div>
+          </div>
+
+          <div class="stage-box">
+            <svg id="stage" class="svg-stage" viewBox="0 0 960 470" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+
+          <div class="transport-bar">
+            <button type="button" class="tbtn primary" id="btn-play" onclick="togglePlay()">⏸ Pause</button>
+            <button type="button" class="tbtn" onclick="prevBeat()">⏮ Prev Step</button>
+            <button type="button" class="tbtn" onclick="nextBeat()">⏭ Next Step</button>
+            <button type="button" class="tbtn" onclick="replayScene()">↺ Replay</button>
+            <button type="button" class="tbtn" data-spd="0.7" onclick="setSpeed(0.7, this)">0.7×</button>
+            <button type="button" class="tbtn active-spd" data-spd="1" onclick="setSpeed(1, this)">1×</button>
+            <button type="button" class="tbtn" data-spd="1.5" onclick="setSpeed(1.5, this)">1.5×</button>
+            <input type="range" class="scrubber" id="scrubber" min="0" max="15.5" step="0.02" value="0" oninput="onScrub(this.value)" aria-label="Lesson timeline scrubber" />
+            <div class="time-readout" id="time-readout">0.0s / 15.5s</div>
+          </div>
+
+          <div class="interactive-dock" id="interactive-dock"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         LESSON 1 PANEL (span6): BASES + CONVERTER SANDBOX
+         ================================================================ -->
+    <section class="panel span6" id="lesson-1">
+      <header class="panel-head">
+        <a class="panel-id" href="#lesson-1">1</a>
+        <h2>Lesson 1: From Wall Switches to Decimal, Octal &amp; Hex</h2>
+        <button type="button" class="watch-btn" onclick="jumpToStage(0, 0)">▶ Watch Scene 1</button>
+      </header>
+      <div class="panel-body">
+        <ol class="steps">
+          <li>
+            <b>Bit → Nibble → Byte (Starting From True Zero)</b>
+            <p>A <strong>Bit</strong> (<em><strong>BI</strong>nary digi<strong>T</strong></em>) is <strong>1 tiny switch</strong> (<code>0</code> = OFF / 0V, <code>1</code> = ON / 1V). Group <strong>4 bits</strong> into a <strong>Nibble</strong> (16 patterns, e.g. <code>0101</code> = 4 + 1 = <code>5</code>). Group <strong>8 bits</strong> into a <strong>Byte</strong> (<code>2⁸ = 256</code> patterns, <code>0..255</code>).</p>
+          </li>
+          <li>
+            <b>Why weights double going left (1, 2, 4, 8, 16, 32, 64, 128)</b>
+            <p>Instead of each slot multiplying by ×10 like decimal (ones, tens, hundreds), each switch slot left multiplies by <strong>×2</strong> because every switch only has 2 states.</p>
+          </li>
+          <li>
+            <b>Worked Example: Converting Decimal <code>219</code> → Binary <code>11011011</code></b>
+            <p>Ask left-to-right: "Can 128 fit in 219?" Yes (219 − 128 = 91). Next: 64 fits (91 − 64 = 27). 32 doesn't fit (<code>0</code>). 16 fits (11). 8 fits (3). 4 doesn't (<code>0</code>). 2 fits (1). 1 fits (0) → <code>11011011</code>.</p>
+          </li>
+          <li>
+            <b>Why Hexadecimal (<code>0xDB</code>) and Octal (<code>0o333</code>) Exist</b>
+            <p>Reading <code>11011011</code> hurts your eyes. Split 8 switches into two groups of 4: <code>1101</code> = 13 = <strong>D</strong>, <code>1011</code> = 11 = <strong>B</strong> → <code>0xDB</code>. Group by 3 from the right for Octal: <code>011 011 011</code> → <code>0o333</code> (classic Unix <code>chmod 755</code> permissions!).</p>
+          </li>
+        </ol>
+
+        <!-- Interactive 8-bit Base Sandbox -->
+        <div class="mini-lab" id="lab-base">
+          <div class="mini-lab-row">
+            <strong style="font-size:12.5px">Live 8-Bit Converter (0–255):</strong>
+            <input type="number" id="lab1-dec" min="0" max="255" value="219" style="width:76px" oninput="lab1FromDec(this.value)" />
+            <span class="fine">or click switches below:</span>
+          </div>
+          <div class="bit-row" id="lab1-bits"></div>
+          <div class="readout-pills" id="lab1-out"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         LESSON 1B PANEL (span6): 0-F RULER + BIT-MASKING STENCIL & OPS
+         ================================================================ -->
+    <section class="panel span6" id="lesson-2">
+      <header class="panel-head">
+        <a class="panel-id" href="#lesson-2">2</a>
+        <h2>Lesson 2: Bit-Masking (Cardboard Stencil) &amp; All 6 Operators</h2>
+        <button type="button" class="watch-btn" onclick="jumpToStage(1, 0)">▶ Watch Scene 2</button>
+      </header>
+      <div class="panel-body">
+        <p class="fine" style="font-size:13.5px;color:var(--secondary)">Programmers often pack multiple tiny settings (RGBA channels, TCP flags, Unix <code>rwx</code>) inside a single byte or integer. Bitwise operators let you read or flip individual switches cleanly in 1 cycle.</p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Op</th><th>Name</th><th>Everyday Stencil Analogy</th><th><code>11011011</code> &amp; <code>00001111</code></th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>&amp;</code></td><td><b>AND</b></td><td>Cardboard stencil: <code>0</code> blocks light, <code>1</code> lets bit pass</td><td><code>00001011</code> (keeps right 4)</td></tr>
+              <tr><td><code>|</code></td><td><b>OR</b></td><td>Turn switch ON: forces <code>1</code> everywhere mask has <code>1</code></td><td><code>11011111</code> (sets right 4 ON)</td></tr>
+              <tr><td><code>^</code></td><td><b>XOR</b></td><td>Toggle switch: flips any bit where mask is <code>1</code></td><td><code>11010100</code> (inverts right 4)</td></tr>
+              <tr><td><code>~</code></td><td><b>NOT</b></td><td>Mirror flip: turns every <code>0</code> ↔ <code>1</code></td><td><code>00100100</code> (all 8 flipped)</td></tr>
+              <tr><td><code>&lt;&lt;</code></td><td><b>Shift L</b></td><td>Slide bits left <code>k</code> seats (= × 2ᵏ)</td><td><code>val &lt;&lt; 2</code> multiplies by 4</td></tr>
+              <tr><td><code>&gt;&gt;</code></td><td><b>Shift R</b></td><td>Slide bits right <code>k</code> seats (= ÷ 2ᵏ)</td><td><code>0xDB &gt;&gt; 4</code> = <code>0x0D</code> (13)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h3>Hex 4-Bit Dictionary (Memorize Just 4 Anchors!)</h3>
+          <p><code>0000=0</code> · <code>0101=5</code> · <code>1000=8</code> · <code>1010=A(10)</code> · <code>1011=B(11)</code> · <code>1100=C(12)</code> · <code>1101=D(13)</code> · <code>1110=E(14)</code> · <code>1111=F(15)</code>. Every hex digit = exact 4 switches!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         LESSON 3 PANEL (span6): SIGNED vs UNSIGNED + TWO'S COMPLEMENT
+         ================================================================ -->
+    <section class="panel span6" id="lesson-3">
+      <header class="panel-head">
+        <a class="panel-id" href="#lesson-3">3</a>
+        <h2>Lesson 3: Negative Numbers &amp; Two's Complement (<code>~x + 1</code>)</h2>
+        <button type="button" class="watch-btn" onclick="jumpToStage(2, 1)">▶ Watch Scene 3</button>
+      </header>
+      <div class="panel-body">
+        <ol class="steps">
+          <li>
+            <b>Signed vs Unsigned Range Formula (for <code>N</code> bits)</b>
+            <p><strong>Unsigned:</strong> <code>0</code> to <code>2ᴺ − 1</code> (e.g., 8-bit <code>uint8</code> = <code>0..255</code>). <strong>Signed:</strong> <code>−2ᴺ⁻¹</code> to <code>2ᴺ⁻¹ − 1</code> (e.g., 8-bit <code>int8</code> = <code>−128..+127</code>). Same 256 switch patterns—just half are negative!</p>
+          </li>
+          <li>
+            <b>What Makes the Leftmost Switch Special?</b>
+            <p>In signed mode, the top switch doesn't act like a mere minus sticker—it simply carries weight <strong><code>−128</code></strong> (for 8 bits) instead of <code>+128</code>. So <code>11011011</code> signed = <code>−128 + 64 + 16 + 8 + 2 + 1 = −37</code>!</p>
+          </li>
+          <li>
+            <b>2-Step Negation Recipe: Flip + Add 1</b>
+            <p>Take <code>+37</code> (<code>00100101</code>) → flip every switch (<code>11011010</code>) → add <code>1</code> → <code>11011011</code> (<code>-37</code>). Check: <code>37 + (-37)</code> carries off the 9th bit leaving <code>00000000</code>!</p>
+          </li>
+        </ol>
+
+        <div class="mini-lab">
+          <div class="mini-lab-row">
+            <strong style="font-size:12.5px">Live 8-Bit Negator (<code>-128..127</code>):</strong>
+            <input type="number" id="lab3-in" min="-128" max="127" value="-37" style="width:82px" oninput="updateLab3(this.value)" />
+            <button type="button" onclick="document.getElementById('lab3-in').value=-128;updateLab3(-128)">Try -128 (INT_MIN)</button>
+          </div>
+          <div class="readout-pills" id="lab3-out"></div>
+        </div>
+
+        <div class="callout warning">
+          <h3>The <code>INT8_MIN</code> Asymmetry Trap (<code>-128</code>)</h3>
+          <p>Why is the floor <code>-128</code> instead of <code>-127</code>? Because <code>0</code> takes one spot on the positive side! Flip &amp; add 1 to <code>10000000</code> (-128) → <code>01111111 + 1 = 10000000</code>—so <code>-(-128)</code> overflows right back to <code>-128</code>!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         LESSON 4 PANEL (span6): OVERFLOW CLIFFS & REAL-WORLD / AI BUGS
+         ================================================================ -->
+    <section class="panel span6" id="lesson-4">
+      <header class="panel-head">
+        <a class="panel-id" href="#lesson-4">4</a>
+        <h2>Lesson 4: Wraparound Overflow &amp; Real AI / Engineering Failures</h2>
+        <button type="button" class="watch-btn" onclick="jumpToStage(2, 3)">▶ Watch Overflow Cliff</button>
+      </header>
+      <div class="panel-body">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Width</th><th>Unsigned Max</th><th>Signed Range</th><th>What Happens at Max + 1?</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>4-bit</code></td><td><code>15</code></td><td><code>−8 .. +7</code></td><td><code>+7 (0111) + 1 → 1000 (-8)</code></td></tr>
+              <tr><td><code>8-bit</code></td><td><code>255</code></td><td><code>−128 .. +127</code></td><td>Pac-Man Level 256 bug (<code>uint8</code> wraps to <code>0</code>)</td></tr>
+              <tr><td><code>16-bit</code></td><td><code>65,535</code></td><td><code>−32,768 .. +32,767</code></td><td>Audio clipping wrap; Gangnam Style initially hit 32-bit!</td></tr>
+              <tr><td><code>32-bit</code></td><td><code>4.29 × 10⁹</code></td><td><code>−2.14B .. +2.14B</code></td><td>Year 2038 clock bug; Boeing 787 248-day reboot</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h3>AI Engineering Connection: <code>int8</code> Quantization Needs <code>int32</code> Accumulators</h3>
+          <p>Modern quantized LLMs store weights in <code>int8</code> (<code>−128..127</code>) to slash VRAM 4×. Multiplying &amp; adding thousands of <code>int8</code> numbers quickly exceeds <code>127</code>—so Tensor Cores accumulate sums into <code>int32</code> (up to 2.14 billion) before rescaling back down!</p>
+        </div>
+        <div class="callout open-question">
+          <h3>Language Trap: Unsigned Wrap vs C/C++ Undefined Behavior</h3>
+          <p>In hardware, bits always wrap modulo <code>2ᴺ</code>. In Rust, wrapping must be explicit (<code>.wrapping_add()</code>); in <strong>C and C++</strong>, unsigned overflow wraps deterministically, while <em>signed overflow is Undefined Behavior</em>—compilers can delete security bounds checks assuming overflow never happens!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         LESSON 5 PANEL (span7): ASCII, UNICODE & VARIABLE-WIDTH UTF-8
+         ================================================================ -->
+    <section class="panel span7" id="lesson-5">
+      <header class="panel-head">
+        <a class="panel-id" href="#lesson-5">5</a>
+        <h2>Lesson 5: ASCII (7-Bit) → Unicode IDs → Variable-Width UTF-8</h2>
+        <button type="button" class="watch-btn" onclick="jumpToStage(3, 0)">▶ Watch Scene 4</button>
+      </header>
+      <div class="panel-body">
+        <p class="fine" style="font-size:13.5px;color:var(--secondary)">Text files are just sequences of bytes. <strong>UTF-8</strong> won the entire web and AI stack because old ASCII text stays valid 1-for-1 while supporting all 150,000+ world scripts and emojis without 4× English bloat.</p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Byte Length</th><th>Unicode Range</th><th>Byte Envelope Bit Pattern (Prefix Bold)</th><th>Example &amp; Verdict</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>1 byte</code></td><td><code>U+0000..007F</code></td><td><code><strong>0</strong>xxxxxxx</code> (7 payload bits)</td><td><span class="assessment good">ASCII safe</span> <code>'A'</code> (#65) = <code>0x41</code></td></tr>
+              <tr><td><code>2 bytes</code></td><td><code>U+0080..07FF</code></td><td><code><strong>110</strong>xxxxx <strong>10</strong>xxxxxx</code></td><td>Latin/Arabic/Cyrillic <code>'é'</code> = <code>C3 A9</code></td></tr>
+              <tr><td><code>3 bytes</code></td><td><code>U+0800..FFFF</code></td><td><code><strong>1110</strong>xxxx <strong>10</strong>xxxxxx <strong>10</strong>xxxxxx</code></td><td>Hindi/CJK <code>'अ'</code> (#2309) = <code>E0 A4 85</code></td></tr>
+              <tr><td><code>4 bytes</code></td><td><code>U+10000..10FFFF</code></td><td><code><strong>11110</strong>xxx <strong>10</strong>xxxxxx <strong>10</strong>xxxxxx <strong>10</strong>xxxxxx</code></td><td>Emojis <code>'🧠'</code> (#129504) = <code>F0 9F A7 A0</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h3>Self-Synchronizing Envelopes &amp; Byte-Level LLM Tokenizers</h3>
+          <p>Why do continuation bytes always start with <code>10</code> while ASCII always starts with <code>0</code>? So the word <code>'A'</code> (<code>01000001</code>) can <strong>never appear inside a multi-byte character</strong>, and corrupted streams resync at the very next byte! Modern GPT/Llama byte-level BPE tokenizers work over these exact raw UTF-8 bytes (0–255), so unknown words never produce <code>&lt;UNK&gt;</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         LESSON 6 PANEL (span5): PYTHON HANDS-ON LAB
+         ================================================================ -->
+    <section class="panel span5" id="python-lab">
+      <header class="panel-head">
+        <a class="panel-id" href="#python-lab">6</a>
+        <h2>Run It Yourself: 12-Line Python Verification</h2>
+      </header>
+      <div class="panel-body">
+        <p class="fine" style="font-size:13.5px;color:var(--secondary)">Every formula on this page can be tested interactively in Python's REPL or any notebook:</p>
+        <div class="snippet">
+          <div class="snippet-head"><span>bits_and_utf8.py</span><button type="button" onclick="copyCode(this)" style="font-size:11.5px;padding:2px 8px">Copy</button></div>
+          <pre><code>val = 219
+print(bin(val), oct(val), hex(val))   # 0b11011011 0o333 0xdb
+print(val &amp; 0x0F, val &gt;&gt; 4)           # 11 (right nibble), 13 (left)
+
+# 8-bit Two's Complement: read 219 as signed, and negate 37
+signed_8 = val - 256 if val &gt;= 128 else val   # -37
+neg_37   = ((~37) + 1) &amp; 0xFF                 # 219 = 0b11011011
+
+# UTF-8 Variable Envelopes
+for ch in "Aअ🧠":
+    b = ch.encode("utf-8")
+    print(ch, f"U+{ord(ch):04X}", len(b), [bin(x)[2:].zfill(8) for x in b])</code></pre>
+        </div>
+        <div class="callout warning">
+          <h3>Why <code>&amp; 0xFF</code> in Python?</h3>
+          <p>Python integers have <strong>infinite precision</strong>, so they don't wrap on their own! Masking with <code>&amp; 0xFF</code> simulates a real 8-bit hardware register.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         PANEL 7 (span12): INTERACTIVE SELF-CHECK QUIZ & PROGRESS CHECKLIST
+         ================================================================ -->
+    <section class="panel span12" id="self-check">
+      <header class="panel-head">
+        <a class="panel-id" href="#self-check">7</a>
+        <h2>Check Your Intuition + Chapter Mastery Checklist</h2>
+      </header>
+      <div class="panel-body">
+        <div class="quiz-grid">
+          <div class="quiz-box">
+            <strong>Q1: Convert <code>0xA3</code> to Binary &amp; Unsigned Decimal</strong>
+            <button type="button" onclick="toggleAns('qa1')">Reveal Step-by-Step Answer</button>
+            <div class="quiz-ans" id="qa1" hidden><code>A = 10 = 1010</code>, <code>3 = 0011</code> → <code>10100011</code>. Decimal = <code>16×10 + 3 = 163</code>.</div>
+          </div>
+          <div class="quiz-box">
+            <strong>Q2: What does <code>120 + 15</code> produce in signed <code>int8</code>?</strong>
+            <button type="button" onclick="toggleAns('qa2')">Reveal Step-by-Step Answer</button>
+            <div class="quiz-ans" id="qa2" hidden>Raw sum = <code>135</code>, which crosses <code>+127</code> by 8 steps → wraps past <code>-128</code> to <strong><code>-121</code></strong> (<code>135 − 256 = -121</code>)!</div>
+          </div>
+          <div class="quiz-box">
+            <strong>Q3: How many UTF-8 bytes does <code>"Hi🚀"</code> take?</strong>
+            <button type="button" onclick="toggleAns('qa3')">Reveal Step-by-Step Answer</button>
+            <div class="quiz-ans" id="qa3" hidden><code>'H'</code> (1B) + <code>'i'</code> (1B) + <code>'🚀'</code> (4B, U+1F680) = <strong>6 bytes</strong> total!</div>
+          </div>
+        </div>
+
+        <ul class="checklist" id="ch01-checklist">
+          <li><label><input type="checkbox" /><span>I can convert any byte between Decimal (<code>0–255</code>), Binary (<code>8 bits</code>), Octal (<code>3-bit groups</code>), and Hex (<code>4-bit nibbles</code>).</span></label></li>
+          <li><label><input type="checkbox" /><span>I can use bit-masking (<code>&amp; 0x0F</code>) and shifting (<code>&gt;&gt; 4</code>) to unpack packed fields inside a byte.</span></label></li>
+          <li><label><input type="checkbox" /><span>I can compute Two's Complement negation (<code>~x + 1</code>), predict overflow wraparound, and explain why AI quantized kernels need <code>int32</code> accumulators.</span></label></li>
+          <li><label><input type="checkbox" /><span>I can inspect UTF-8 lead-byte prefixes (<code>0</code>, <code>110</code>, <code>1110</code>, <code>11110</code>) to tell how many bytes any character uses.</span></label></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ==========================================================================
+   1. ARCHIFY THEME (System/Light/Dark) & STYLE (Clean/Editorial/Product/Swiss)
+   ========================================================================== */
+const root = document.documentElement;
+const styleNames = { clean: 'Clean', editorial: 'Editorial', product: 'Product', swiss: 'Swiss' };
+const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+let curThemeChoice = 'auto';
+
+function applyTheme() {
+  const effective = curThemeChoice === 'auto' ? (darkQuery.matches ? 'dark' : 'light') : curThemeChoice;
+  root.dataset.theme = effective;
+  document.querySelectorAll('[data-theme-choice]').forEach(btn => {
+    btn.setAttribute('aria-pressed', String(btn.dataset.themeChoice === curThemeChoice));
+  });
+}
+
+document.querySelectorAll('[data-theme-choice]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    curThemeChoice = btn.dataset.themeChoice;
+    try { localStorage.setItem('archify-theme', curThemeChoice); } catch {}
+    applyTheme();
+  });
+});
+darkQuery.addEventListener?.('change', () => { if (curThemeChoice === 'auto') applyTheme(); });
+
+const styleToggle = document.querySelector('[data-style-toggle]');
+const styleMenu = document.querySelector('.style-options');
+function setStyle(style, save = true) {
+  if (!styleNames[style]) return;
+  root.dataset.style = style;
+  document.querySelectorAll('[data-style-choice]').forEach(el => {
+    el.setAttribute('aria-checked', String(el.dataset.styleChoice === style));
+  });
+  styleToggle.querySelector('[data-style-label]').textContent = styleNames[style];
+  styleToggle.querySelector('.style-swatch').dataset.swatch = style;
+  if (save) try { localStorage.setItem('archify-style', style); } catch {}
+}
+styleToggle.addEventListener('click', () => {
+  const open = styleMenu.hidden;
+  styleMenu.hidden = !open;
+  styleToggle.setAttribute('aria-expanded', String(open));
+});
+document.querySelectorAll('[data-style-choice]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setStyle(btn.dataset.styleChoice);
+    styleMenu.hidden = true;
+    styleToggle.setAttribute('aria-expanded', 'false');
+  });
+});
+document.addEventListener('click', e => {
+  if (!styleMenu.hidden && !e.target.closest('.style-menu')) {
+    styleMenu.hidden = true;
+    styleToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+
+/* Checklist persistence */
+const clBoxes = document.querySelectorAll('#ch01-checklist input');
+let clSaved = [];
+try { clSaved = JSON.parse(localStorage.getItem('ch01-checklist') || '[]'); } catch {}
+clBoxes.forEach((box, idx) => {
+  box.checked = clSaved[idx] === 1;
+  box.addEventListener('change', () => {
+    try { localStorage.setItem('ch01-checklist', JSON.stringify([...clBoxes].map(b => b.checked ? 1 : 0))); } catch {}
+  });
+});
+
+function toggleAns(id) {
+  const el = document.getElementById(id);
+  el.hidden = !el.hidden;
+}
+
+function copyCode(btn) {
+  const code = btn.closest('.snippet').querySelector('code').textContent;
+  navigator.clipboard?.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1400);
+  });
+}
+
+/* ==========================================================================
+   2. INLINE INTERACTIVE MINI-LABS (Panels 1 & 3)
+   ========================================================================== */
+let lab1Byte = 219;
+function renderLab1() {
+  const weights = [128, 64, 32, 16, 8, 4, 2, 1];
+  const bits = weights.map(w => (lab1Byte & w) ? 1 : 0);
+  document.getElementById('lab1-bits').innerHTML = bits.map((b, i) => `
+    <button type="button" class="bit-tile ${b ? 'on' : ''}" onclick="lab1Toggle(${weights[i]})">
+      <small>${weights[i]}</small>
+      <span>${b}</span>
+    </button>
+  `).join('');
+  document.getElementById('lab1-out').innerHTML = `
+    <span class="rpill">Bin: ${bits.join('')}</span>
+    <span class="rpill">Dec: ${lab1Byte}</span>
+    <span class="rpill">Oct: 0o${lab1Byte.toString(8).padStart(3,'0')}</span>
+    <span class="rpill">Hex: 0x${lab1Byte.toString(16).toUpperCase().padStart(2,'0')}</span>
+  `;
+}
+function lab1Toggle(w) {
+  lab1Byte ^= w;
+  document.getElementById('lab1-dec').value = lab1Byte;
+  renderLab1();
+}
+function lab1FromDec(v) {
+  const n = Math.max(0, Math.min(255, parseInt(v, 10) || 0));
+  lab1Byte = n;
+  renderLab1();
+}
+
+function updateLab3(v) {
+  let n = parseInt(v, 10);
+  if (isNaN(n)) n = 0;
+  n = Math.max(-128, Math.min(127, n));
+  const u8 = n < 0 ? 256 + n : n;
+  const pos = Math.abs(n);
+  const posBin = (pos & 0xFF).toString(2).padStart(8, '0');
+  const invBin = (posBin).split('').map(c => c === '0' ? '1' : '0').join('');
+  const finalBin = u8.toString(2).padStart(8, '0');
+  document.getElementById('lab3-out').innerHTML = n < 0 ? `
+    <span class="rpill">1. |x|=${pos} (${posBin})</span>
+    <span class="rpill">2. Flip: ${invBin}</span>
+    <span class="rpill">3. +1: <b>${finalBin}</b> (u8=${u8})</span>
+  ` : `
+    <span class="rpill">Signed: +${n}</span>
+    <span class="rpill">Binary: <b>${finalBin}</b></span>
+    <span class="rpill">Hex: 0x${u8.toString(16).toUpperCase().padStart(2,'0')}</span>
+  `;
+}
+
+/* ==========================================================================
+   3. LIVE ILLUSTRATED TEACHER ENGINE (4 Scenes · Pure Time-Function Renders)
+   ========================================================================== */
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const easeOut = t => 1 - Math.pow(1 - clamp01(t), 3);
+const easeInOut = t => { const x = clamp01(t); return x < 0.5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2; };
+const seg = (t, t0, dur) => clamp01((t - t0) / dur);
+
+let curScene = 0;
+let curTime = 0;
+let playing = true;
+let speed = 1.0;
+let lastRaf = null;
+let stopAtBeatEnd = null;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let s1Bits = [1,1,0,1, 1,0,1,1];
+let s1UserEdited = false;
+let s2Mask = [0,0,0,0, 1,1,1,1];
+let s2Shifted = false;
+let s3Val = 5;
+let s3Last = 5;
+let s4Text = 'Aअ🧠';
+
+const SCENES = [
+  {
+    name: 'Switches → Binary & Hex',
+    duration: 15.5,
+    beats: [
+      { t: 0.0, holdEnd: 2.8, title: 'Step 1 · 1 Bit',
+        msg: 'Everything inside silicon starts as a tiny wall switch: OFF (0) or ON (1).',
+        sub: 'Two crisp states stay rock-solid even when flipped billions of times per second.' },
+      { t: 3.0, holdEnd: 5.8, title: 'Step 2 · 4 Switches',
+        msg: 'Line up 4 switches—each worth double the one beside it (8 · 4 · 2 · 1). Add only the ON switches!',
+        sub: 'Here switches 4 and 1 are ON (0101) → 4 + 1 = 5.' },
+      { t: 6.0, holdEnd: 9.2, title: 'Step 3 · 8 Switches = 1 Byte',
+        msg: 'With 8 switches (weights 128 down to 1), pattern 11011011 sums cleanly to 219.',
+        sub: 'Watch electric signals flow down from each ON switch into the Decimal Total counter.' },
+      { t: 9.5, holdEnd: 12.2, title: 'Step 4 · Hex Letters A–F',
+        msg: 'Four switches hold 0 to 15. After digit 9, Hexadecimal borrows letters A=10 through F=15.',
+        sub: 'Notice left 4 bits (1101 = 13) match D, and right 4 bits (1011 = 11) match B.' },
+      { t: 12.4, holdEnd: 15.5, title: 'Step 5 · 0xDB (Try Clicking!)',
+        msg: 'So 11011011 collapses to 2 tidy Hex letters: 0xDB! Click any switch on the board to experiment.',
+        sub: 'Octal (0o333) just bundles the exact same 8 switches in groups of 3 instead of 4.' }
+    ]
+  },
+  {
+    name: 'Cardboard Stencil (&)',
+    duration: 13.0,
+    beats: [
+      { t: 0.0, holdEnd: 2.8, title: 'Step 1 · Packed Byte',
+        msg: 'One byte can carry TWO 4-bit numbers side-by-side: 13 on the left and 11 on the right.',
+        sub: 'Goal: Read ONLY the right 4 bits cleanly without modifying the original byte.' },
+      { t: 3.0, holdEnd: 6.0, title: 'Step 2 · Lower Stencil (&)',
+        msg: 'With AND (&), a 0 acts like solid cardboard (blocks light) and 1 acts like an open window.',
+        sub: 'Left 4 bits hit cardboard and become 0; right 4 bits pass straight through!' },
+      { t: 6.2, holdEnd: 8.8, title: 'Step 3 · Right Isolated (= 11)',
+        msg: 'Only 1011 shines through the open windows, unpacking the right-side value: 11!',
+        sub: 'Rule: 0 AND anything = 0 (blocked). 1 AND bit = bit (kept).' },
+      { t: 9.0, holdEnd: 13.0, title: 'Step 4 · Shift Right >> 4',
+        msg: 'To read the LEFT 4 bits (1101 = 13), slide every switch 4 seats right (>> 4) into the open window!',
+        sub: 'Click any cardboard stencil box on the canvas to test custom bit masks live.' }
+    ]
+  },
+  {
+    name: 'Odometer & Overflow',
+    duration: 15.5,
+    beats: [
+      { t: 0.0, holdEnd: 2.8, title: 'Step 1 · Minus-Bit Flaw',
+        msg: 'Reserving the top bit as a minus sign creates +0 AND -0 and breaks hardware adders.',
+        sub: 'CPUs avoid this by bending numbers into a Circular Odometer Wheel (Two’s Complement).' },
+      { t: 3.0, holdEnd: 6.0, title: 'Step 2 · Wrap Past 0000',
+        msg: 'Step 1 click backward past 0000: the wheel lands on 1111, acting naturally as -1!',
+        sub: 'Just like a car odometer rolling backward 1 mile from 0000 to 9999.' },
+      { t: 6.2, holdEnd: 9.2, title: 'Step 3 · Flip & Add 1',
+        msg: 'Need -5? Start at +5 (0101), flip every switch (1010), and add +1 → 1011 (-8 + 2 + 1 = -5).',
+        sub: 'In signed mode, the top switch simply carries weight -8 instead of +8!' },
+      { t: 9.4, holdEnd: 12.4, title: 'Step 4 · Overflow Cliff',
+        msg: 'Step forward past +7 (0111) and you fall straight across the red cliff into -8 (1000)!',
+        sub: 'Real bugs: Pac-Man level 256 & int8 AI weights overflowing unless summed in int32.' },
+      { t: 12.6, holdEnd: 15.5, title: 'Step 5 · Spin Wheel Live!',
+        msg: 'Use ◀ -1 Back and +1 Forward ▶ below to feel both signed (+7 ↔ -8) and unsigned (15 ↔ 0) wraparound.',
+        sub: 'Notice 0101 + 1011 = 10000 (the 5th bit falls off, leaving exact 0000!).' }
+    ]
+  },
+  {
+    name: 'ASCII → Unicode → UTF-8',
+    duration: 13.5,
+    beats: [
+      { t: 0.0, holdEnd: 2.8, title: 'Step 1 · Unicode IDs',
+        msg: 'Computers only store numbers. Unicode gives every world symbol an ID (#65, #2309, #129504).',
+        sub: 'Every letter, accent, Hindi/CJK character, and emoji has a permanent dictionary slot.' },
+      { t: 3.0, holdEnd: 5.8, title: 'Step 2 · Why Not 4 Bytes?',
+        msg: 'Storing every English letter in 4 fixed bytes so emojis fit would bloat webpages by 4×!',
+        sub: 'UTF-8 solves this with smart 1-to-4-byte envelopes.' },
+      { t: 6.0, holdEnd: 9.2, title: 'Step 3 · 1-Byte ASCII',
+        msg: "English 'A' (#65) starts with prefix bit 0 (0xxxxxxx)—taking 1 byte, 100% identical to 1963 ASCII!",
+        sub: 'Zero waste for code, JSON, HTML, and English text.' },
+      { t: 9.4, holdEnd: 13.5, title: 'Step 4 · Multi-Byte & Live Type',
+        msg: "Hindi 'अ' uses 3 bytes (1110xxxx...) and '🧠' uses 4 bytes (11110xxx...). Type your own text below!",
+        sub: 'Every continuation byte begins with 10 so decoders can instantly resync anywhere.' }
+    ]
+  }
+];
+
+function drawScene1(t) {
+  const showSingle = easeOut(seg(t, 0.0, 0.6));
+  const singleFlip = t >= 1.2 && t < 2.8 ? easeInOut(seg(t, 1.2, 0.5)) : 0;
+  const rowReveal = easeOut(seg(t, 3.0, 0.6));
+  const full8Reveal = easeOut(seg(t, 6.0, 0.7));
+  const hexRulerReveal = easeOut(seg(t, 9.5, 0.6));
+  const finalBadgeReveal = easeOut(seg(t, 12.4, 0.6));
+
+  let bits;
+  if (s1UserEdited && t >= 12.4) bits = s1Bits;
+  else if (t < 6.0) bits = [0,0,0,0, 0,1,0,1];
+  else bits = [1,1,0,1, 1,0,1,1];
+
+  const weights = [128, 64, 32, 16, 8, 4, 2, 1];
+  const val = bits.reduce((acc, b, i) => acc + (b ? weights[i] : 0), 0);
+  let shownVal = val;
+  if (!s1UserEdited) {
+    if (t >= 3.0 && t < 6.0) shownVal = Math.round(5 * easeOut(seg(t, 3.8, 1.0)));
+    else if (t >= 6.0 && t < 9.5) shownVal = Math.round(219 * easeOut(seg(t, 6.8, 1.4)));
+  }
+
+  const hi = (val >> 4) & 0x0F, lo = val & 0x0F;
+  const hexStr = val.toString(16).toUpperCase().padStart(2, '0');
+  const octStr = val.toString(8).padStart(3, '0');
+  const b1Op = t < 3.0 ? showSingle : Math.max(0, 1 - seg(t, 2.9, 0.4));
+
+  let out = `<rect width="960" height="470" fill="var(--stg-bg)"/>
+    <text x="36" y="38" fill="var(--stg-ink)" font-size="18" font-weight="800">From Wall Switches to Binary, Decimal &amp; Hex</text>`;
+
+  if (b1Op > 0.01) {
+    const isOn = singleFlip > 0.5;
+    out += `<g opacity="${b1Op.toFixed(2)}">
+      <rect x="290" y="95" width="380" height="230" rx="18" fill="var(--stg-card)" stroke="${isOn ? 'var(--stg-em)' : 'var(--stg-border)'}" stroke-width="2"/>
+      <text x="480" y="132" text-anchor="middle" fill="var(--stg-muted)" font-size="13" font-weight="700">ONE HARDWARE SWITCH (1 BIT)</text>
+      <rect x="415" y="156" width="130" height="100" rx="16" fill="${isOn ? 'var(--stg-em-bg)' : 'var(--stg-track)'}" stroke="${isOn ? 'var(--stg-em)' : 'var(--stg-border)'}" stroke-width="2.5"/>
+      <text x="480" y="216" text-anchor="middle" fill="${isOn ? 'var(--stg-em-ink)' : 'var(--stg-muted)'}" font-size="44" font-weight="800" class="mono">${isOn ? '1' : '0'}</text>
+      <text x="480" y="294" text-anchor="middle" fill="${isOn ? 'var(--stg-em)' : 'var(--stg-muted)'}" font-size="15" font-weight="700">${isOn ? 'POWER ON → 1' : 'POWER OFF → 0'}</text>
+    </g>`;
+  }
+
+  if (rowReveal > 0.01) {
+    const startX = 72, gap = 104;
+    out += bits.map((b, i) => {
+      const isLeft = i < 4;
+      const nodeVis = isLeft ? full8Reveal : rowReveal;
+      if (nodeVis <= 0.01) return '';
+      const x = startX + i * gap + (i >= 4 ? 18 : 0);
+      let active = b === 1;
+      if (!s1UserEdited && t >= 3.0 && t < 6.0) active = b === 1 && t >= 3.5 + (i - 4) * 0.18;
+      else if (!s1UserEdited && t >= 6.0 && t < 9.5) active = b === 1 && t >= 6.4 + i * 0.14;
+      const wireDraw = active ? clamp01(seg(t, (t < 6.0 ? 3.8 : 6.7), 0.7)) : 0;
+      const scVal = 0.85 + 0.15 * nodeVis;
+      return `<g opacity="${nodeVis.toFixed(2)}" class="clickable" onclick="clickScene1Bit(${i})">
+        <text x="${x+38}" y="82" text-anchor="middle" fill="var(--stg-muted)" font-size="11.5" class="mono">worth ${weights[i]}</text>
+        <g transform="translate(${x+38}, 126) scale(${scVal.toFixed(3)}) translate(${-(x+38)}, -126)">
+          <rect class="hit" x="${x}" y="92" width="76" height="68" rx="12" fill="${active ? (isLeft ? 'var(--stg-em-bg)' : 'var(--stg-cy-bg)') : 'var(--stg-card)'}" stroke="${active ? (isLeft ? 'var(--stg-em)' : 'var(--stg-cy)') : 'var(--stg-border)'}" stroke-width="2"/>
+          <text x="${x+38}" y="132" text-anchor="middle" fill="${active ? 'var(--stg-ink)' : 'var(--stg-muted)'}" font-size="26" font-weight="800" class="mono">${active ? '1' : '0'}</text>
+          <text x="${x+38}" y="151" text-anchor="middle" fill="${active ? (isLeft ? 'var(--stg-em)' : 'var(--stg-cy)') : 'var(--stg-muted)'}" font-size="10.5" font-weight="700">${active ? '+'+weights[i] : 'OFF'}</text>
+        </g>
+        ${active ? `<path d="M ${x+38} 162 L ${x+38} 228" stroke="${isLeft ? 'var(--stg-em)' : 'var(--stg-cy)'}" stroke-width="2.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="${(1 - (s1UserEdited ? 1 : wireDraw)).toFixed(2)}" class="${t >= 12.4 ? 'march' : ''}"/>` : ''}
+      </g>`;
+    }).join('');
+
+    out += `<g opacity="${rowReveal.toFixed(2)}">
+      <line x1="110" y1="228" x2="860" y2="228" stroke="var(--stg-border)" stroke-width="3"/>
+      <rect x="330" y="242" width="300" height="58" rx="12" fill="var(--stg-card)" stroke="var(--stg-em)" stroke-width="2"/>
+      <text x="480" y="264" text-anchor="middle" fill="var(--stg-muted)" font-size="11" font-weight="700">DECIMAL TOTAL (SUM OF ON SWITCHES)</text>
+      <text x="480" y="290" text-anchor="middle" fill="var(--stg-em)" font-size="24" font-weight="800" class="mono">${shownVal}</text>
+    </g>`;
+
+    if (hexRulerReveal > 0.01) {
+      const cells = '0123456789ABCDEF'.split('').map((ch, idx) => {
+        const isHi = idx === hi, isLo = idx === lo, cx = 64 + idx * 52;
+        return `<rect x="${cx}" y="324" width="46" height="44" rx="7" fill="${isHi ? 'var(--stg-em-bg)' : (isLo ? 'var(--stg-cy-bg)' : 'var(--stg-card)')}" stroke="${isHi ? 'var(--stg-em)' : (isLo ? 'var(--stg-cy)' : 'var(--stg-border)')}" stroke-width="${(isHi||isLo)?2:1}"/>
+          <text x="${cx+23}" y="343" text-anchor="middle" fill="var(--stg-muted)" font-size="10" class="mono">${idx}</text>
+          <text x="${cx+23}" y="361" text-anchor="middle" fill="var(--stg-ink)" font-size="14" font-weight="800" class="mono">${ch}</text>`;
+      }).join('');
+      out += `<g opacity="${hexRulerReveal.toFixed(2)}">
+        <text x="480" y="316" text-anchor="middle" fill="var(--stg-sub)" font-size="11.5" font-weight="700">HEX RULER (4 SWITCHES = 0..15 → 0..F)</text>
+        ${cells}
+      </g>`;
+    }
+
+    if (finalBadgeReveal > 0.01) {
+      out += `<g opacity="${finalBadgeReveal.toFixed(2)}">
+        <rect x="64" y="384" width="265" height="62" rx="10" fill="var(--stg-em-bg)" stroke="var(--stg-em)" stroke-width="1.5"/>
+        <text x="196" y="408" text-anchor="middle" fill="var(--stg-em-ink)" font-size="11" font-weight="700">LEFT 4 SWITCHES (${bits.slice(0,4).join('')})</text>
+        <text x="196" y="434" text-anchor="middle" fill="var(--stg-em)" font-size="18" font-weight="800" class="mono">${hi} → '${hexStr[0]}'</text>
+
+        <rect x="347" y="384" width="265" height="62" rx="10" fill="var(--stg-cy-bg)" stroke="var(--stg-cy)" stroke-width="1.5"/>
+        <text x="479" y="408" text-anchor="middle" fill="var(--stg-cy-ink)" font-size="11" font-weight="700">RIGHT 4 SWITCHES (${bits.slice(4).join('')})</text>
+        <text x="479" y="434" text-anchor="middle" fill="var(--stg-cy)" font-size="18" font-weight="800" class="mono">${lo} → '${hexStr[1]}'</text>
+
+        <rect x="630" y="384" width="266" height="62" rx="10" fill="var(--stg-vi-bg)" stroke="var(--stg-vi)" stroke-width="2"/>
+        <text x="763" y="408" text-anchor="middle" fill="var(--stg-vi-ink)" font-size="11" font-weight="700">HEX &amp; OCTAL RESULT</text>
+        <text x="763" y="434" text-anchor="middle" fill="var(--stg-vi)" font-size="18" font-weight="800" class="mono">0x${hexStr}  |  0o${octStr}</text>
+      </g>`;
+    }
+  }
+  return out;
+}
+
+function drawScene2(t) {
+  const inputBits = [1,1,0,1, 1,0,1,1];
+  const shiftProg = s2Shifted ? 1 : (t >= 9.0 ? easeInOut(seg(t, 9.2, 1.0)) : 0);
+  const stencilDrop = easeOut(seg(t, 3.0, 0.8));
+  const resReveal = easeOut(seg(t, 6.2, 0.7));
+  const effInput = shiftProg > 0.5 ? [0,0,0,0, 1,1,0,1] : inputBits;
+  const maskBits = t < 9.0 ? [0,0,0,0, 1,1,1,1] : s2Mask;
+  const resBits = effInput.map((b, i) => b & maskBits[i]);
+  const resVal = resBits.reduce((a, b, i) => a + (b << (7 - i)), 0);
+
+  let out = `<rect width="960" height="470" fill="var(--stg-bg)"/>
+    <text x="36" y="38" fill="var(--stg-ink)" font-size="18" font-weight="800">Bit-Masking = Cardboard Stencil Over 8 Lights</text>
+    <text x="36" y="114" fill="var(--stg-muted)" font-size="13" font-weight="700">8 Lights (Input):</text>`;
+
+  const slidePx = shiftProg * (4 * 90 + 24);
+  for (let i = 0; i < 8; i++) {
+    const x = 185 + i * 90 + (i >= 4 ? 24 : 0);
+    const drawnX = x + slidePx;
+    const edgeFade = drawnX > 855 ? Math.max(0, 1 - (drawnX - 855) / 45) : 1;
+    const isLeft = i < 4;
+    if (edgeFade > 0.01) {
+      out += `<g opacity="${edgeFade.toFixed(2)}">
+        <rect x="${drawnX}" y="76" width="70" height="58" rx="10" fill="${inputBits[i] ? (isLeft ? 'var(--stg-cy-bg)' : 'var(--stg-vi-bg)') : 'var(--stg-card)'}" stroke="${inputBits[i] ? (isLeft ? 'var(--stg-cy)' : 'var(--stg-vi)') : 'var(--stg-border)'}" stroke-width="2"/>
+        <text x="${drawnX+35}" y="113" text-anchor="middle" fill="var(--stg-ink)" font-size="22" font-weight="800" class="mono">${inputBits[i]}</text>
+      </g>`;
+    }
+    if (shiftProg > 0.5 && i < 4) {
+      out += `<rect x="${x}" y="76" width="70" height="58" rx="10" fill="var(--stg-card)" stroke="var(--stg-border)" stroke-dasharray="4 3"/>
+        <text x="${x+35}" y="113" text-anchor="middle" fill="var(--stg-muted)" font-size="20" font-weight="700" class="mono">0</text>`;
+    }
+  }
+
+  if (stencilDrop > 0.01) {
+    const yOff = (1 - stencilDrop) * -30;
+    out += `<g opacity="${stencilDrop.toFixed(2)}" transform="translate(0, ${yOff.toFixed(1)})">
+      <text x="36" y="214" fill="var(--stg-am)" font-size="13" font-weight="700">Stencil (&amp;):</text>
+      <text x="36" y="232" fill="var(--stg-muted)" font-size="11">(click any box!)</text>`;
+    for (let i = 0; i < 8; i++) {
+      const x = 185 + i * 90 + (i >= 4 ? 24 : 0);
+      const open = maskBits[i] === 1;
+      out += `<g class="clickable" onclick="clickScene2Mask(${i})">
+        <rect class="hit" x="${x}" y="176" width="70" height="64" rx="10" fill="${open ? 'var(--stg-em-bg)' : 'var(--stg-rd-bg)'}" stroke="${open ? 'var(--stg-em)' : 'var(--stg-rd)'}" stroke-width="2" stroke-dasharray="${open ? 'none' : '5 3'}"/>
+        <text x="${x+35}" y="206" text-anchor="middle" fill="${open ? 'var(--stg-em)' : 'var(--stg-rd)'}" font-size="20" font-weight="800" class="mono">${maskBits[i]}</text>
+        <text x="${x+35}" y="226" text-anchor="middle" fill="${open ? 'var(--stg-em-ink)' : 'var(--stg-rd-ink)'}" font-size="10" font-weight="700">${open ? 'OPEN' : 'BLOCK'}</text>
+      </g>`;
+      if (open && resReveal > 0.01 && effInput[i]) {
+        out += `<line x1="${x+35}" y1="242" x2="${x+35}" y2="306" stroke="var(--stg-em)" stroke-width="3" class="march" opacity="${resReveal.toFixed(2)}"/>`;
+      }
+    }
+    out += `</g>`;
+  }
+
+  if (resReveal > 0.01) {
+    out += `<g opacity="${resReveal.toFixed(2)}"><text x="36" y="344" fill="var(--stg-em)" font-size="13" font-weight="700">Light Out:</text>`;
+    for (let i = 0; i < 8; i++) {
+      const x = 185 + i * 90 + (i >= 4 ? 24 : 0);
+      const on = resBits[i] === 1;
+      out += `<rect x="${x}" y="308" width="70" height="58" rx="10" fill="${on ? 'var(--stg-em-bg)' : 'var(--stg-card)'}" stroke="${on ? 'var(--stg-em)' : 'var(--stg-border)'}" stroke-width="2"/>
+        <text x="${x+35}" y="345" text-anchor="middle" fill="${on ? 'var(--stg-em-ink)' : 'var(--stg-muted)'}" font-size="22" font-weight="800" class="mono">${resBits[i]}</text>`;
+    }
+    out += `<rect x="185" y="388" width="734" height="54" rx="12" fill="var(--stg-card)" stroke="var(--stg-em)" stroke-width="1.5"/>
+      <text x="552" y="421" text-anchor="middle" fill="var(--stg-em)" font-size="18" font-weight="800" class="mono">Shining Through = ${resVal} (0x${resVal.toString(16).toUpperCase().padStart(2,'0')})</text>
+    </g>`;
+  }
+  return out;
+}
+
+function drawScene3(t) {
+  let out = `<rect width="960" height="470" fill="var(--stg-bg)"/>
+    <text x="36" y="38" fill="var(--stg-ink)" font-size="18" font-weight="800">Two's Complement = Circular Car Odometer (4-Bit)</text>`;
+
+  const badFade = t < 3.0 ? easeOut(seg(t, 0.0, 0.6)) : Math.max(0, 1 - seg(t, 2.8, 0.4));
+  if (badFade > 0.01) {
+    out += `<g opacity="${badFade.toFixed(2)}">
+      <rect x="40" y="90" width="400" height="270" rx="14" fill="var(--stg-rd-bg)" stroke="var(--stg-rd)" stroke-width="2"/>
+      <text x="240" y="128" text-anchor="middle" fill="var(--stg-rd)" font-size="15" font-weight="800">✗ BAD IDEA: Reserve Top Bit as '-'</text>
+      <text x="64" y="172" fill="var(--stg-ink)" font-size="14" class="mono">0000 = +0   AND   1000 = -0  (Two zeros!)</text>
+      <text x="64" y="214" fill="var(--stg-ink)" font-size="14" class="mono">0101 (+5) + 1101 (-5) = 10010 (-2?!)</text>
+      <text x="240" y="280" text-anchor="middle" fill="var(--stg-rd-ink)" font-size="13">CPU would need special extra subtractor wiring!</text>
+    </g>`;
+  }
+
+  const wheelOp = t < 2.2 ? 0.25 : easeOut(seg(t, 2.2, 0.7));
+  const cx = 250, cy = 262, rMid = 122, rOut = 162, rIn = 78;
+  let val = s3Val;
+  if (t < 3.0) val = 0;
+  else if (t < 6.2) val = t < 4.2 ? 0 : 15;
+  else if (t < 9.4) val = 11;
+  else if (t < 12.6) val = t < 10.6 ? 7 : 8;
+  const isCliff = (t >= 10.6 && t < 12.6) || (t >= 12.6 && s3Last === 7 && s3Val === 8);
+
+  out += `<g opacity="${wheelOp.toFixed(2)}"><circle cx="${cx}" cy="${cy}" r="${rMid}" fill="none" stroke="var(--stg-track)" stroke-width="24"/>`;
+  for (let i = 0; i < 16; i++) {
+    const a = (-90 + i * 22.5) * Math.PI / 180;
+    const ox = cx + rOut * Math.cos(a), oy = cy + rOut * Math.sin(a);
+    const mx = cx + rMid * Math.cos(a), my = cy + rMid * Math.sin(a);
+    const ix = cx + rIn * Math.cos(a), iy = cy + rIn * Math.sin(a);
+    const isSel = i === val, isNeg = i >= 8, signed = isNeg ? i - 16 : i;
+    out += `<text x="${ox.toFixed(1)}" y="${(oy+4).toFixed(1)}" text-anchor="middle" fill="${isSel ? 'var(--stg-am)' : 'var(--stg-muted)'}" font-size="${isSel ? 13 : 11}" font-weight="700" class="mono">${i}</text>
+      <rect x="${(mx-20).toFixed(1)}" y="${(my-11).toFixed(1)}" width="40" height="22" rx="6"
+        fill="${isSel ? (isNeg ? 'var(--stg-rd)' : 'var(--stg-em)') : (isNeg ? 'var(--stg-rd-bg)' : 'var(--stg-em-bg)')}"
+        stroke="${isSel ? 'var(--stg-am)' : (isNeg ? 'var(--stg-rd)' : 'var(--stg-em)')}" stroke-width="${isSel ? 2.5 : 1}" />
+      <text x="${mx.toFixed(1)}" y="${(my+4).toFixed(1)}" text-anchor="middle" fill="${isSel ? '#ffffff' : 'var(--stg-ink)'}" font-size="10.5" font-weight="800" class="mono">${i.toString(2).padStart(4,'0')}</text>
+      <text x="${ix.toFixed(1)}" y="${(iy+4).toFixed(1)}" text-anchor="middle" fill="${isSel ? 'var(--stg-ink)' : (isNeg ? 'var(--stg-rd)' : 'var(--stg-em)')}" font-size="${isSel ? 13 : 11}" font-weight="800" class="mono">${signed>=0?'+'+signed:signed}</text>`;
+  }
+
+  const selAngle = (-90 + val * 22.5) * Math.PI / 180;
+  const px = cx + (rIn - 16) * Math.cos(selAngle), py = cy + (rIn - 16) * Math.sin(selAngle);
+  const cliffA = 78.75 * Math.PI / 180;
+  out += `<line x1="${cx}" y1="${cy}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}" stroke="var(--stg-am)" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="7" fill="var(--stg-am)"/>
+    <line x1="${(cx+50*Math.cos(cliffA)).toFixed(1)}" y1="${(cy+50*Math.sin(cliffA)).toFixed(1)}"
+      x2="${(cx+180*Math.cos(cliffA)).toFixed(1)}" y2="${(cy+180*Math.sin(cliffA)).toFixed(1)}"
+      stroke="var(--stg-rd)" stroke-width="2.5" stroke-dasharray="5 4"/>
+    <text x="${cx+50}" y="454" text-anchor="middle" fill="var(--stg-rd)" font-size="11.5" font-weight="800">Overflow Cliff (+7 ↔ -8)</text>
+  </g>`;
+
+  if (t >= 3.0) {
+    const signedVal = val >= 8 ? val - 16 : val;
+    const negProg = easeOut(seg(t, 6.2, 1.5));
+    out += `<rect x="490" y="76" width="434" height="142" rx="14" fill="var(--stg-card)" stroke="${isCliff ? 'var(--stg-rd)' : 'var(--stg-cy)'}" stroke-width="2"/>
+      <text x="512" y="106" fill="var(--stg-muted)" font-size="12" font-weight="700">CURRENT DIAL POSITION</text>
+      <text x="512" y="142" fill="var(--stg-ink)" font-size="24" font-weight="800" class="mono">${val.toString(2).padStart(4,'0')}  →  Signed: <tspan fill="${signedVal<0?'var(--stg-rd)':'var(--stg-em)'}">${signedVal>=0?'+'+signedVal:signedVal}</tspan></text>
+      <text x="512" y="172" fill="var(--stg-muted)" font-size="13">Unsigned: <tspan fill="var(--stg-ink)" font-weight="700">${val}</tspan>  (Top switch worth <tspan fill="var(--stg-rd)" font-weight="700">-8</tspan> in signed mode)</text>
+      <text x="512" y="198" fill="${isCliff?'var(--stg-rd)':'var(--stg-em)'}" font-size="12.5" font-weight="700">${isCliff ? '⚠ OVERFLOW CLIFF CROSSED! +7 + 1 wrapped straight to -8!' : '100% smooth circular dial: +1 clockwise, -1 counter-clockwise.'}</text>`;
+
+    if (t >= 6.2) {
+      out += `<g opacity="${negProg.toFixed(2)}">
+        <rect x="490" y="234" width="434" height="196" rx="14" fill="var(--stg-card)" stroke="var(--stg-vi)" stroke-width="1.5"/>
+        <text x="512" y="264" fill="var(--stg-vi)" font-size="15" font-weight="800">Teacher's 2-Step Negation Trick (-5)</text>
+        <text x="512" y="298" fill="var(--stg-ink)" font-size="14" class="mono">Step 0 · Start (+5)    :  0 1 0 1</text>
+        <text x="512" y="330" fill="var(--stg-am)" font-size="14" class="mono" opacity="${seg(t, 7.0, 0.5).toFixed(2)}">Step 1 · Flip switches :  1 0 1 0  (0↔1)</text>
+        <text x="512" y="362" fill="var(--stg-em)" font-size="14" font-weight="800" class="mono" opacity="${seg(t, 7.8, 0.5).toFixed(2)}">Step 2 · Add +1        :  1 0 1 1  (= -5!)</text>
+        <text x="512" y="402" fill="var(--stg-muted)" font-size="12" opacity="${seg(t, 8.2, 0.5).toFixed(2)}">Proof: 0101 + 1011 = 10000 → 5th bit drops → 0000 (zero)!</text>
+      </g>`;
+    }
+  }
+  return out;
+}
+
+function drawScene4(t) {
+  let out = `<rect width="960" height="470" fill="var(--stg-bg)"/>
+    <text x="36" y="38" fill="var(--stg-ink)" font-size="18" font-weight="800">How Letters &amp; Emojis Travel in UTF-8 Envelopes</text>`;
+
+  const p1 = easeOut(seg(t, 0.0, 0.6));
+  const bloatOp = t >= 3.0 && t < 6.0 ? easeOut(seg(t, 3.0, 0.6)) : (t >= 6.0 ? Math.max(0, 1 - seg(t, 5.8, 0.4)) : 0);
+
+  out += `<g opacity="${p1.toFixed(2)}">
+    <rect x="36" y="58" width="888" height="62" rx="12" fill="var(--stg-card)" stroke="var(--stg-border)"/>
+    <text x="58" y="94" fill="var(--stg-cy)" font-size="14" font-weight="800">Pipeline:</text>
+    <text x="148" y="94" fill="var(--stg-ink)" font-size="14" font-weight="700">1. Symbol ('A', 'अ', '🧠')   ──▶   2. Unicode ID (#65, #2309, #129504)   ──▶   3. UTF-8 Envelopes (1–4 Bytes)</text>
+  </g>`;
+
+  if (bloatOp > 0.01) {
+    out += `<g opacity="${bloatOp.toFixed(2)}">
+      <rect x="180" y="160" width="600" height="220" rx="16" fill="var(--stg-rd-bg)" stroke="var(--stg-rd)" stroke-width="2"/>
+      <text x="480" y="202" text-anchor="middle" fill="var(--stg-rd)" font-size="17" font-weight="800">Why NOT Always Use 4 Bytes For Every Character?</text>
+      <text x="480" y="246" text-anchor="middle" fill="var(--stg-ink)" font-size="15">English "HELLO" in fixed 4 bytes = 20 bytes (4× bloated!)</text>
+      <text x="480" y="286" text-anchor="middle" fill="var(--stg-em)" font-size="16" font-weight="800">UTF-8 Solution: Smart Variable Envelopes → "HELLO" = only 5 bytes!</text>
+      <text x="480" y="330" text-anchor="middle" fill="var(--stg-muted)" font-size="13">Byte 1's leading bits announce how many envelopes belong together.</text>
+    </g>`;
+    return out;
+  }
+
+  const enc = new TextEncoder();
+  const chars = [...(s4Text || 'Aअ🧠')].slice(0, 4);
+  const startY = 140;
+  chars.forEach((ch, rowIdx) => {
+    const rowStart = rowIdx === 0 ? 6.0 : 9.4 + (rowIdx - 1) * 0.45;
+    const op = t >= 9.4 ? easeOut(seg(t, rowStart, 0.5)) : (rowIdx === 0 ? easeOut(seg(t, 6.0, 0.5)) : 0);
+    if (op <= 0.01) return;
+    const cp = ch.codePointAt(0);
+    const bytes = [...enc.encode(ch)];
+    const y = startY + rowIdx * 78;
+    out += `<g opacity="${op.toFixed(2)}">
+      <rect x="36" y="${y}" width="888" height="66" rx="12" fill="var(--stg-card)" stroke="var(--stg-border)"/>
+      <text x="58" y="${y+32}" fill="var(--stg-ink)" font-size="19" font-weight="800">${ch}  <tspan font-size="13" fill="var(--stg-muted)" class="mono">ID #${cp} (U+${cp.toString(16).toUpperCase().padStart(4,'0')})</tspan></text>
+      <text x="58" y="${y+52}" fill="${bytes.length===1?'var(--stg-em)':'var(--stg-muted)'}" font-size="11.5" font-weight="700">${bytes.length} byte${bytes.length>1?'s':''} ${bytes.length===1?'(ASCII compatible!)':''}</text>`;
+    bytes.forEach((b, bi) => {
+      const bx = 330 + bi * 146;
+      const bin = b.toString(2).padStart(8, '0');
+      const pLen = bi > 0 ? 2 : (bytes.length === 1 ? 1 : bytes.length + 1);
+      const stk = bi === 0 ? (bytes.length === 1 ? 'var(--stg-em)' : 'var(--stg-am)') : 'var(--stg-vi)';
+      out += `<rect x="${bx}" y="${y+12}" width="134" height="42" rx="8" fill="var(--stg-bg)" stroke="${stk}" stroke-width="1.5"/>
+        <text x="${bx+67}" y="${y+38}" text-anchor="middle" font-size="14" font-weight="800" class="mono"><tspan fill="${bi>0?'var(--stg-vi)':'var(--stg-am)'}">${bin.slice(0,pLen)}</tspan><tspan fill="var(--stg-cy)">${bin.slice(pLen)}</tspan></text>`;
+    });
+    out += `</g>`;
+  });
+  return out;
+}
+
+/* Interactive handlers */
+function clickScene1Bit(i) { s1UserEdited = true; s1Bits[i] ^= 1; curTime = SCENES[0].duration; playing = false; updatePlayBtn(); render(); }
+function clickScene2Mask(i) { s2Mask[i] ^= 1; if (curTime < 9.0) curTime = 9.5; playing = false; updatePlayBtn(); render(); }
+function toggleS2Shift() { s2Shifted = !s2Shifted; curTime = s2Shifted ? 11.0 : 7.5; playing = false; updatePlayBtn(); render(); }
+function stepS3(d) { s3Last = s3Val; s3Val = (s3Val + d + 16) & 0x0F; curTime = SCENES[2].duration; playing = false; updatePlayBtn(); render(); }
+function jumpS3(v) { s3Last = s3Val; s3Val = v & 0x0F; curTime = SCENES[2].duration; playing = false; updatePlayBtn(); render(); }
+function jumpToStage(sceneIdx, beatIdx) {
+  selectScene(sceneIdx);
+  jumpBeat(beatIdx);
+  document.getElementById('live-theater').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateDock() {
+  const dock = document.getElementById('interactive-dock');
+  if (curScene === 0) {
+    dock.innerHTML = `<label>Click any switch on the stage to experiment:</label>
+      <div class="dock-controls">
+        <button type="button" onclick="s1UserEdited=true;s1Bits=[0,1,0,0,0,0,0,1];curTime=15.5;playing=false;updatePlayBtn();render()">Preset 'A' (65)</button>
+        <button type="button" onclick="s1UserEdited=true;s1Bits=[1,1,0,1,1,0,1,1];curTime=15.5;playing=false;updatePlayBtn();render()">Preset 219 (0xDB)</button>
+        <button type="button" onclick="s1UserEdited=true;s1Bits=[0,0,0,0,0,0,0,0];curTime=15.5;playing=false;updatePlayBtn();render()">Clear All 0</button>
+      </div>`;
+  } else if (curScene === 1) {
+    dock.innerHTML = `<label>Click any cardboard stencil box above or test sliding bits:</label>
+      <div class="dock-controls">
+        <button type="button" onclick="s2Mask=[0,0,0,0,1,1,1,1];s2Shifted=false;curTime=7.5;playing=false;updatePlayBtn();render()">Keep Right 4 (0x0F)</button>
+        <button type="button" onclick="toggleS2Shift()">Slide Right 4 Seats (&gt;&gt; 4)</button>
+        <button type="button" onclick="s2Mask=[1,1,1,1,0,0,0,0];s2Shifted=false;curTime=10.5;playing=false;updatePlayBtn();render()">Keep Left 4 (0xF0)</button>
+      </div>`;
+  } else if (curScene === 2) {
+    dock.innerHTML = `<label>Spin the 4-bit odometer yourself:</label>
+      <div class="dock-controls">
+        <button type="button" onclick="stepS3(-1)">◀ -1 Back</button>
+        <button type="button" onclick="stepS3(1)">+1 Forward ▶</button>
+        <button type="button" onclick="jumpS3(0)">Jump to 0</button>
+        <button type="button" onclick="jumpS3(7)">Jump to +7 (Overflow Cliff)</button>
+      </div>`;
+  } else {
+    dock.innerHTML = `<label>Type up to 4 symbols to inspect live UTF-8 envelopes:</label>
+      <div class="dock-controls">
+        <input type="text" value="${s4Text}" oninput="s4Text=this.value;curTime=13.5;playing=false;updatePlayBtn();render()" />
+        <button type="button" onclick="s4Text='Aअ🧠';curTime=13.5;playing=false;updatePlayBtn();document.querySelector('#interactive-dock input').value='Aअ🧠';render()">Aअ🧠</button>
+        <button type="button" onclick="s4Text='Hi🚀';curTime=13.5;playing=false;updatePlayBtn();document.querySelector('#interactive-dock input').value='Hi🚀';render()">Hi🚀</button>
+      </div>`;
+  }
+}
+
+function getBeatIndex(scene, t) {
+  let idx = 0;
+  for (let i = 0; i < scene.beats.length; i++) if (t >= scene.beats[i].t) idx = i;
+  return idx;
+}
+
+function render() {
+  const sc = SCENES[curScene];
+  const beatIdx = getBeatIndex(sc, curTime);
+  const beat = sc.beats[beatIdx];
+  document.getElementById('narr-step').textContent = beat.title;
+  document.getElementById('narr-msg').textContent = beat.msg;
+  document.getElementById('narr-sub').textContent = beat.sub;
+  document.querySelectorAll('.bdot').forEach((d, i) => d.classList.toggle('active', i === beatIdx));
+
+  const scrub = document.getElementById('scrubber');
+  scrub.max = sc.duration;
+  scrub.value = curTime;
+  document.getElementById('time-readout').textContent = `${curTime.toFixed(1)}s / ${sc.duration.toFixed(1)}s`;
+
+  const svg = document.getElementById('stage');
+  if (curScene === 0) svg.innerHTML = drawScene1(curTime);
+  else if (curScene === 1) svg.innerHTML = drawScene2(curTime);
+  else if (curScene === 2) svg.innerHTML = drawScene3(curTime);
+  else svg.innerHTML = drawScene4(curTime);
+}
+
+function rebuildBeatDots() {
+  document.getElementById('beat-dots').innerHTML = SCENES[curScene].beats.map((b, i) =>
+    `<button type="button" class="bdot" onclick="jumpBeat(${i})">${b.title}</button>`
+  ).join('');
+}
+
+function selectScene(idx) {
+  curScene = idx; curTime = 0; stopAtBeatEnd = null; s1UserEdited = false; s2Shifted = false;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  rebuildBeatDots(); updateDock();
+  playing = !reducedMotion;
+  if (reducedMotion) curTime = SCENES[curScene].duration;
+  updatePlayBtn(); render();
+}
+
+function jumpBeat(i) {
+  const sc = SCENES[curScene];
+  curTime = sc.beats[i].t; stopAtBeatEnd = sc.beats[i].holdEnd;
+  playing = !reducedMotion;
+  if (reducedMotion) curTime = sc.beats[i].holdEnd;
+  updatePlayBtn(); render();
+}
+
+function prevBeat() {
+  const sc = SCENES[curScene];
+  let idx = 0;
+  for (let i = 0; i < sc.beats.length; i++) if (curTime >= sc.beats[i].t + 0.15) idx = i;
+  jumpBeat(Math.max(0, idx - 1));
+}
+
+function nextBeat() {
+  const sc = SCENES[curScene];
+  let idx = 0;
+  for (let i = 0; i < sc.beats.length; i++) if (curTime >= sc.beats[i].t) idx = i;
+  jumpBeat(Math.min(sc.beats.length - 1, idx + 1));
+}
+
+function replayScene() { curTime = 0; stopAtBeatEnd = null; s1UserEdited = false; s2Shifted = false; playing = true; updatePlayBtn(); render(); }
+function togglePlay() { if (!playing && curTime >= SCENES[curScene].duration - 0.05) curTime = 0; stopAtBeatEnd = null; playing = !playing; updatePlayBtn(); }
+function updatePlayBtn() { const b = document.getElementById('btn-play'); b.textContent = playing ? '⏸ Pause' : '▶ Play'; }
+function setSpeed(sp, el) { speed = sp; document.querySelectorAll('[data-spd]').forEach(b => b.classList.remove('active-spd')); if (el) el.classList.add('active-spd'); }
+function onScrub(v) { playing = false; stopAtBeatEnd = null; curTime = parseFloat(v); updatePlayBtn(); render(); }
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  else if (e.key === 'ArrowRight') nextBeat();
+  else if (e.key === 'ArrowLeft') prevBeat();
+});
+
+function tick(now) {
+  if (lastRaf === null) lastRaf = now;
+  const dt = Math.min(0.05, (now - lastRaf) / 1000);
+  lastRaf = now;
+  if (playing) {
+    curTime += dt * speed;
+    const dur = SCENES[curScene].duration;
+    if (stopAtBeatEnd !== null && curTime >= stopAtBeatEnd) {
+      curTime = stopAtBeatEnd; stopAtBeatEnd = null; playing = false; updatePlayBtn();
+    } else if (curTime >= dur) {
+      curTime = dur; playing = false; updatePlayBtn();
+    }
+    render();
+  }
+  requestAnimationFrame(tick);
+}
+
+/* Boot + URL param overrides (?scene=N&t=N&style=...&theme=...) */
+const params = new URLSearchParams(location.search);
+try { curThemeChoice = localStorage.getItem('archify-theme') || 'auto'; } catch {}
+if (['auto', 'light', 'dark'].includes(params.get('theme'))) curThemeChoice = params.get('theme');
+applyTheme();
+
+let initStyle = 'editorial';
+try { initStyle = localStorage.getItem('archify-style') || 'editorial'; } catch {}
+if (styleNames[params.get('style')]) initStyle = params.get('style');
+setStyle(initStyle, false);
+
+renderLab1();
+updateLab3(-37);
+
+if (params.get('scene') !== null) curScene = Math.max(0, Math.min(3, parseInt(params.get('scene'), 10) || 0));
+document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === curScene));
+rebuildBeatDots();
+updateDock();
+
+if (params.get('t') !== null) {
+  playing = false;
+  curTime = Math.max(0, Math.min(SCENES[curScene].duration, parseFloat(params.get('t')) || 0));
+  updatePlayBtn();
+  render();
+} else if (reducedMotion) {
+  playing = false;
+  curTime = SCENES[curScene].duration;
+  updatePlayBtn();
+  render();
+} else {
+  render();
+}
+window.__ready = true;
+console.log('duration', SCENES[curScene].duration);
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

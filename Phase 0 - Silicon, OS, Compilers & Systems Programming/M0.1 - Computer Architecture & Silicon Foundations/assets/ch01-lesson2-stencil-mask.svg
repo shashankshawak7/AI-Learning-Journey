@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="960" height="440" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <rect width="960" height="440" rx="18" fill="#0f172a"/>
+  <text x="34" y="42" fill="#f8fafc" font-size="22" font-weight="800">Lesson 2: How a Cardboard Stencil Isolates Bits (Bit-Masking)</text>
+  <text x="34" y="66" fill="#94a3b8" font-size="13.5">Imagine 1 byte holds TWO tiny 4-bit numbers side by side: 13 (left) and 11 (right). How do you read just one?</text>
+
+  <!-- Left Card: Grab Right 4 (& 0x0F) -->
+  <rect x="34" y="88" width="436" height="320" rx="14" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="54" y="106" width="122" height="24" rx="6" fill="#0284c7"/>
+  <text x="115" y="122" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">GRAB RIGHT 4 BITS</text>
+  <text x="54" y="152" fill="#f8fafc" font-size="14" font-weight="700">Put a Cardboard Stencil (&amp; 0x0F) Over Top</text>
+  <text x="54" y="174" fill="#94a3b8" font-size="12">0 = solid cardboard (blocks) · 1 = cutout hole (passes)</text>
+
+  <rect x="54" y="192" width="396" height="196" rx="10" fill="#0f172a" stroke="#334155"/>
+  <text x="72" y="222" fill="#94a3b8" font-size="12">8 lights:</text>
+  <text x="176" y="222" fill="#f8fafc" font-size="16" font-weight="800" font-family="ui-monospace, monospace"><tspan fill="#38bdf8">1 1 0 1</tspan>   <tspan fill="#a78bfa">1 0 1 1</tspan></text>
+
+  <text x="72" y="256" fill="#fbbf24" font-size="12">Stencil (&amp;):</text>
+  <text x="176" y="256" font-size="16" font-weight="800" font-family="ui-monospace, monospace"><tspan fill="#f43f5e">0 0 0 0</tspan>   <tspan fill="#34d399">1 1 1 1</tspan></text>
+  <text x="176" y="276" fill="#64748b" font-size="11">cardboard       open holes</text>
+
+  <line x1="72" y1="292" x2="432" y2="292" stroke="#334155" stroke-width="1.5"/>
+  <text x="72" y="322" fill="#34d399" font-size="13" font-weight="700">Result:</text>
+  <text x="176" y="322" fill="#34d399" font-size="16" font-weight="800" font-family="ui-monospace, monospace"><tspan fill="#475569">0 0 0 0</tspan>   1 0 1 1</text>
+  <rect x="72" y="340" width="360" height="34" rx="7" fill="#064e3b"/>
+  <text x="252" y="362" text-anchor="middle" fill="#ecfdf5" font-size="13" font-weight="700">Left 4 erased! Right 4 = 1011 = 11</text>
+
+  <!-- Right Card: Grab Left 4 (>> 4 then & 0x0F) -->
+  <rect x="490" y="88" width="436" height="320" rx="14" fill="#1e293b" stroke="#a78bfa" stroke-width="1.5"/>
+  <rect x="510" y="106" width="122" height="24" rx="6" fill="#7c3aed"/>
+  <text x="571" y="122" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">GRAB LEFT 4 BITS</text>
+  <text x="510" y="152" fill="#f8fafc" font-size="14" font-weight="700">Step 1: Slide Right 4 Seats (&gt;&gt; 4) · Step 2: Stencil</text>
+  <text x="510" y="174" fill="#94a3b8" font-size="12">Sliding right moves the left 4 bits into the open window!</text>
+
+  <rect x="510" y="192" width="396" height="196" rx="10" fill="#0f172a" stroke="#334155"/>
+  <text x="528" y="222" fill="#94a3b8" font-size="12">Start:</text>
+  <text x="632" y="222" fill="#f8fafc" font-size="16" font-weight="800" font-family="ui-monospace, monospace"><tspan fill="#38bdf8">1 1 0 1</tspan>   <tspan fill="#64748b">1 0 1 1</tspan></text>
+
+  <text x="528" y="256" fill="#a78bfa" font-size="12">Slide &gt;&gt; 4:</text>
+  <text x="632" y="256" font-size="16" font-weight="800" font-family="ui-monospace, monospace"><tspan fill="#475569">0 0 0 0</tspan>   <tspan fill="#38bdf8">1 1 0 1</tspan></text>
+  <text x="632" y="276" fill="#64748b" font-size="11">zeros fill left   1011 fell off!</text>
+
+  <line x1="528" y1="292" x2="888" y2="292" stroke="#334155" stroke-width="1.5"/>
+  <text x="528" y="322" fill="#34d399" font-size="13" font-weight="700">&amp; 0x0F:</text>
+  <text x="632" y="322" fill="#34d399" font-size="16" font-weight="800" font-family="ui-monospace, monospace"><tspan fill="#475569">0 0 0 0</tspan>   1 1 0 1</text>
+  <rect x="528" y="340" width="360" height="34" rx="7" fill="#312e81"/>
+  <text x="708" y="362" text-anchor="middle" fill="#ede9fe" font-size="13" font-weight="700">Left 4 unpacked cleanly: 1101 = 13!</text>
+</svg>
+
