@@ -5,7 +5,7 @@
 ![Topics](https://img.shields.io/badge/Interactive_Topics-273-db2777?style=for-the-badge)
 ![Tracks](https://img.shields.io/badge/Specialization_Tracks-8-d97706?style=for-the-badge)
 
-> 2. Open live roadmpa at `https://shashankshawak7.github.io/AI-Learning-Journey/` (or open [`docs/index.html`](./docs/index.html) locally in any browser).
+> 2. Open live roadmap at `https://shashankshawak7.github.io/AI-Learning-Journey/` (or open [`docs/index.html`](./docs/index.html) locally in any browser).
 
 ---
 
