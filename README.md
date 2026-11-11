@@ -5,11 +5,7 @@
 ![Topics](https://img.shields.io/badge/Interactive_Topics-273-db2777?style=for-the-badge)
 ![Tracks](https://img.shields.io/badge/Specialization_Tracks-8-d97706?style=for-the-badge)
 
-> **⚠️ Why this repository has both `README.md` and `docs/index.html`:**  
-> GitHub strips `<script>` tags on `github.com` repository pages for security, so raw HTML files cannot run interactively inside `README.md`.  
-> **To launch the full interactive colorful web roadmap (with live search, track filtering, expandable syllabi, and saved progress checkboxes):**
-> 1. Enable **Settings → Pages → Source: Deploy from a branch → `main` / `/docs`**.
-> 2. Open your live site at `https://<your-github-username>.github.io/<your-repo-name>/` (or open [`docs/index.html`](./docs/index.html) locally in any browser).
+> 2. Open live roadmpa at `https://shashankshawak7.github.io/AI-Learning-Journey/` (or open [`docs/index.html`](./docs/index.html) locally in any browser).
 
 ---
 
