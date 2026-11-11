@@ -1,0 +1,6 @@
+# Local workspace agent skills (kept local, not committed to repo)
+.agents/
+
+# Temporary diagram / render artifacts
+.archify/
+
