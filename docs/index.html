@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frontier AI & Intelligence Master Roadmap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --background: #0b1120; --card: #111827; --foreground: #f8fafc; --muted-foreground: #94a3b8; --border: #1e293b; }
+    html.light { --background: #f8fafc; --card: #ffffff; --foreground: #0f172a; --muted-foreground: #475569; --border: #e2e8f0; }
+    body { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+    .phase-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+    .phase-card:hover { transform: translateY(-1px); }
+    .topic-pill { transition: all 0.15s ease; }
+    .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.35); border-radius: 999px; }
+    .glow-ring { box-shadow: 0 0 0 1px rgba(99,102,241,0.25), 0 8px 30px -12px rgba(99,102,241,0.35); }
+    @keyframes pulseSoft { 0%, 100% { opacity: 1; } 50% { opacity: 0.65; } }
+    .badge-new { animation: pulseSoft 2.8s infinite; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased m-0 p-0">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- HERO HEADER -->
+    <header class="relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 sm:p-8 glow-ring">
+      <div class="absolute inset-0 pointer-events-none opacity-15" style="background: radial-gradient(circle at 15% 20%, #6366f1, transparent 45%), radial-gradient(circle at 85% 30%, #06b6d4, transparent 45%), radial-gradient(circle at 50% 90%, #ec4899, transparent 45%);"></div>
+      <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div class="space-y-3 max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-indigo-600 text-white shadow-sm">
+            <span>EXHAUSTIVE MASTER CURRICULUM</span>
+            <span>•</span>
+            <span>SILICON TO FRONTIER RESEARCH</span>
+          </div>
+          <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+            The Complete AI, Systems &amp; Frontier Intelligence Roadmap
+          </h1>
+          <p class="text-sm sm:text-base text-[var(--muted-foreground)] leading-relaxed">
+            An end-to-end engineering &amp; research blueprint spanning bare-metal silicon, compilers, pure &amp; stochastic math, data engines, deep learning, Transformers, CUDA/Triton kernels, distributed clusters, GRPO reasoning, autonomous MCP agents, embodied robotics, and mechanistic interpretability.
+          </p>
+        </div>
+
+        <!-- OVERALL PROGRESS RING / STATS -->
+        <div class="flex items-center gap-5 bg-[var(--background)]/70 border border-[var(--border)] rounded-xl p-4 shrink-0">
+          <div class="relative w-20 h-20 flex items-center justify-center">
+            <svg class="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="34" fill="none" stroke="currentColor" stroke-width="7" class="text-[var(--border)]" />
+              <circle id="overall-ring" cx="40" cy="40" r="34" fill="none" stroke="url(#gradProgress)" stroke-width="7" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6" />
+              <defs>
+                <linearGradient id="gradProgress" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#06b6d4" />
+                  <stop offset="50%" stop-color="#6366f1" />
+                  <stop offset="100%" stop-color="#ec4899" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <span id="overall-pct" class="absolute text-sm font-bold tabular-nums">0%</span>
+          </div>
+          <div class="space-y-1 text-xs">
+            <div class="font-semibold text-sm">Mastery Progress</div>
+            <div class="text-[var(--muted-foreground)]"><span id="done-count" class="font-mono font-bold text-[var(--foreground)]">0</span> / <span id="total-count" class="font-mono">0</span> Topics · <span id="mod-done-count" class="font-mono font-bold text-[var(--foreground)]">0</span> / <span id="mod-total-count" class="font-mono">0</span> Modules</div>
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              <button onclick="expandAll(true)" class="px-2 py-1 rounded bg-[var(--card)] border border-[var(--border)] hover:border-indigo-500 text-xs font-medium">Expand Phases</button>
+              <button onclick="expandAll(false)" class="px-2 py-1 rounded bg-[var(--card)] border border-[var(--border)] hover:border-indigo-500 text-xs font-medium">Collapse Phases</button>
+              <button onclick="document.documentElement.classList.toggle('light')" class="px-2 py-1 rounded bg-[var(--card)] border border-[var(--border)] hover:border-amber-500 text-xs font-medium">Theme ☀/🌙</button>
+              <button onclick="toggleAllDetails()" id="btn-all-details" class="px-2 py-1 rounded bg-indigo-600 text-white text-xs font-semibold hover:opacity-90">Expand All Syllabi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI STRIP -->
+      <div class="relative grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-5 border-t border-[var(--border)] text-xs">
+        <div class="rounded-lg bg-[var(--background)]/80 border border-cyan-500/40 px-3 py-2.5">
+          <div class="text-[var(--muted-foreground)] font-medium">Architecture Depth</div>
+          <div id="kpi-depth" class="font-extrabold text-sm mt-0.5 text-cyan-500">9 Phases · 35 Modules</div>
+        </div>
+        <div class="rounded-lg bg-[var(--background)]/80 border border-indigo-500/40 px-3 py-2.5">
+          <div class="text-[var(--muted-foreground)] font-medium">Career Paths</div>
+          <div class="font-extrabold text-sm mt-0.5 text-indigo-500">8 Specialization Tracks</div>
+        </div>
+        <div class="rounded-lg bg-[var(--background)]/80 border border-amber-500/40 px-3 py-2.5">
+          <div class="text-[var(--muted-foreground)] font-medium">Proof of Competence</div>
+          <div class="font-extrabold text-sm mt-0.5 text-amber-500">9 Build Capstones + Paper</div>
+        </div>
+        <div class="rounded-lg bg-[var(--background)]/80 border border-pink-500/40 px-3 py-2.5">
+          <div class="text-[var(--muted-foreground)] font-medium">2025–2026 Frontier</div>
+          <div class="font-extrabold text-sm mt-0.5 text-pink-500">GRPO · MLA · MCP · SAEs · VLA</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- INTERACTIVE DEPENDENCY PIPELINE -->
+    <section class="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-base font-bold flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>
+            Interactive Skill Dependency Map
+          </h2>
+          <p class="text-xs text-[var(--muted-foreground)]">Click any phase node below to jump directly to its modules, mental models, and build gates.</p>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs font-semibold">
+          <span class="px-2.5 py-0.5 rounded-full bg-slate-600 text-white">Foundations</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-teal-600 text-white">Core ML &amp; LLM</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950">Systems &amp; Infra</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-indigo-600 text-white">Post-Train &amp; Agents</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-pink-600 text-white">Frontier Research</span>
+        </div>
+      </div>
+
+      <div id="pipeline-map" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-9 gap-2.5"></div>
+    </section>
+
+    <!-- NAVIGATION TABS & SEARCH CONTROLS -->
+    <section class="sticky top-2 z-20 rounded-2xl border border-[var(--border)] bg-[var(--card)]/95 backdrop-blur p-4 space-y-3 shadow-lg">
+      <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+        <div class="flex flex-wrap gap-1.5" id="view-tabs">
+          <button data-tab="roadmap" onclick="switchTab('roadmap')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm border border-indigo-600">Full Roadmap (Phases 0–8)</button>
+          <button data-tab="tracks" onclick="switchTab('tracks')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--background)] text-[var(--foreground)] border border-[var(--border)]">8 Specialization Tracks</button>
+          <button data-tab="milestones" onclick="switchTab('milestones')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--background)] text-[var(--foreground)] border border-[var(--border)]">Mastery Gates &amp; Timelines</button>
+          <button data-tab="papers" onclick="switchTab('papers')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--background)] text-[var(--foreground)] border border-[var(--border)]">Reading &amp; Tool Ecosystem</button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <input id="search-input" type="text" placeholder="Filter topics (e.g. CUDA, GRPO, Stochastic, MCP)..."
+            oninput="applyFilters()"
+            class="w-full sm:w-64 px-3 py-1.5 rounded-lg text-xs bg-[var(--background)] text-[var(--foreground)] border border-[var(--border)] focus:outline-none focus:border-indigo-500" />
+          <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs bg-pink-600 text-white font-semibold cursor-pointer select-none shadow-sm">
+            <input id="filter-new" type="checkbox" onchange="applyFilters()" class="accent-white" />
+            <span>Frontier Additions Only</span>
+          </label>
+          <select id="track-highlight" onchange="applyFilters()" class="px-2.5 py-1.5 rounded-lg text-xs bg-[var(--background)] border border-[var(--border)] focus:outline-none">
+            <option value="all">All Tracks (No Filter)</option>
+            <option value="A">Track A: Frontier LLM Researcher</option>
+            <option value="B">Track B: AI Systems &amp; Inference</option>
+            <option value="C">Track C: Autonomous Agent Architect</option>
+            <option value="D">Track D: Multimodal Researcher</option>
+            <option value="E">Track E: Robotics &amp; Physical AI</option>
+            <option value="F">Track F: Distributed Infra Engineer</option>
+            <option value="G">Track G: Neuro-Symbolic &amp; Alt AI</option>
+            <option value="H">Track H: Applied &amp; Enterprise AI</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN CONTENT CONTAINERS -->
+    <main id="tab-roadmap" class="space-y-5"></main>
+    <main id="tab-tracks" class="hidden space-y-5"></main>
+    <main id="tab-milestones" class="hidden space-y-5"></main>
+    <main id="tab-papers" class="hidden space-y-5"></main>
+
+    <footer class="text-center text-xs text-[var(--muted-foreground)] py-4 border-t border-[var(--border)]">
+      Progress is automatically saved locally in your browser. Mastery requires passing each phase's build capstone—never just reading.
+    </footer>
+  </div>
+<script>
+const PALETTES = {
+  slate:   { bg: "bg-slate-500/15",   border: "border-slate-500/45",   top: "border-t-4 border-t-slate-500",   badge: "bg-slate-700 text-white",   text: "text-slate-500",   dot: "bg-slate-500",   bar: "bg-slate-500",   ring: "ring-slate-500/50" },
+  cyan:    { bg: "bg-cyan-500/15",    border: "border-cyan-500/45",    top: "border-t-4 border-t-cyan-500",    badge: "bg-cyan-600 text-white",    text: "text-cyan-500",    dot: "bg-cyan-500",    bar: "bg-cyan-500",    ring: "ring-cyan-500/50" },
+  teal:    { bg: "bg-teal-500/15",    border: "border-teal-500/45",    top: "border-t-4 border-t-teal-500",    badge: "bg-teal-600 text-white",    text: "text-teal-500",    dot: "bg-teal-500",    bar: "bg-teal-500",    ring: "ring-teal-500/50" },
+  emerald: { bg: "bg-emerald-500/15", border: "border-emerald-500/45", top: "border-t-4 border-t-emerald-500", badge: "bg-emerald-600 text-white", text: "text-emerald-500", dot: "bg-emerald-500", bar: "bg-emerald-500", ring: "ring-emerald-500/50" },
+  sky:     { bg: "bg-sky-500/15",     border: "border-sky-500/45",     top: "border-t-4 border-t-sky-500",     badge: "bg-sky-600 text-white",     text: "text-sky-500",     dot: "bg-sky-500",     bar: "bg-sky-500",     ring: "ring-sky-500/50" },
+  amber:   { bg: "bg-amber-500/15",   border: "border-amber-500/45",   top: "border-t-4 border-t-amber-500",   badge: "bg-amber-500 text-slate-950", text: "text-amber-500",  dot: "bg-amber-500",   bar: "bg-amber-500",   ring: "ring-amber-500/50" },
+  indigo:  { bg: "bg-indigo-500/15",  border: "border-indigo-500/45",  top: "border-t-4 border-t-indigo-500",  badge: "bg-indigo-600 text-white",  text: "text-indigo-500",  dot: "bg-indigo-500",  bar: "bg-indigo-500",  ring: "ring-indigo-500/50" },
+  violet:  { bg: "bg-violet-500/15",  border: "border-violet-500/45",  top: "border-t-4 border-t-violet-500",  badge: "bg-violet-600 text-white",  text: "text-violet-500",  dot: "bg-violet-500",  bar: "bg-violet-500",  ring: "ring-violet-500/50" },
+  pink:    { bg: "bg-pink-500/15",    border: "border-pink-500/45",    top: "border-t-4 border-t-pink-500",    badge: "bg-pink-600 text-white",    text: "text-pink-500",    dot: "bg-pink-500",    bar: "bg-pink-500",    ring: "ring-pink-500/50" }
+};
+
+const ROADMAP_PHASES = [
+  {
+    id: "P0", num: "Phase 0", title: "Silicon, OS, Compilers & Systems Programming",
+    short: "Silicon & Systems", color: "slate", prereq: "None", est: "10–14 Weeks",
+    tracks: ["A","B","C","D","E","F","G","H"],
+    mentalModel: "Intelligence is ultimately electricity moving bits through caches and ALUs. Before you abstract compute, understand cache lines, memory alignment, compilers, and lock-free concurrency.",
+    capstone: "Build a zero-dependency C++/Rust Tensor runtime with a custom arena allocator, lock-free thread pool, SIMD matmul, and PyO3 Python bindings.",
+    modules: [
+      {
+        id: "M0.1", title: "Computer Architecture & Silicon Foundations",
+        mental: "Why memory bandwidth—not FLOPs—bottlenecks modern AI.",
+        topics: [
+          "Binary, Hex, Two's complement, Overflow, ASCII & UTF-8", "Boolean Algebra, Logic Gates & IEEE 754 Floats (FP32/16/BF16/FP8/NVFP4)",
+          "CPU ALU, Registers, Machine Instructions & Assembly", "Pipelining, Branch Prediction, Out-of-Order & SIMD (AVX-512/NEON)",
+          "L1/L2/L3 Cache Lines, Cache Misses & False Sharing", "Virtual Memory, Page Tables, TLB & NUMA",
+          "Von Neumann vs Harvard Architectures", "PCIe Gen4/5/6, NVLink, Infinity Fabric, CXL"
+        ],
+        frontier: ["FP8 / NVFP4 hardware formats", "CXL cache-coherent memory"]
+      },
+      {
+        id: "M0.2", title: "Operating Systems, Compilers & IR Lowering",
+        mental: "How high-level Python tensor code lowers to machine instructions.",
+        topics: [
+          "Processes, Threads, Interrupts & System Calls (mmap, epoll, futex)", "Kernel vs User Space, Context Switching",
+          "Atomics, Memory Barriers, Mutexes & Lock-Free Queues", "Async I/O (io_uring), Zero-Copy Networking (DPDK)",
+          "Lexing, Parsing, ASTs & Static Single Assignment (SSA)", "Compiler vs Interpreter vs JIT Virtual Machines",
+          "MLIR, LLVM IR, Loop Tiling, Operator Fusion & Graph Lowering"
+        ],
+        frontier: ["MLIR & AI Compiler Passes (TVM / XLA)", "io_uring async disk-to-GPU streaming"]
+      },
+      {
+        id: "M0.3", title: "Python Mastery & Systems Programming (C, C++, Rust)",
+        mental: "Python is your control plane; C++/Rust/CUDA is your execution plane.",
+        topics: [
+          "Python Core: OOP, Dataclasses, Decorators, Generators, Context Managers", "Python Internals: GIL, AsyncIO, Memory/GC, Type Hints & Protocols",
+          "Python Tooling: uv, pytest, mypy, Ruff & Packaging Architecture", "C Pointers, Manual Allocation, Alignment & Bitfields",
+          "C++20 RAII, Move Semantics, Templates, Smart Pointers", "Rust Ownership, Lifetimes, Fearless Concurrency & Unsafe",
+          "FFI Extensions: ctypes, pybind11, nanobind, PyO3"
+        ],
+        frontier: ["Free-threaded Python (no-GIL 3.13+)", "nanobind & PyO3 zero-copy buffers"]
+      },
+      {
+        id: "M0.4", title: "Data Structures, Algorithms & Complexity",
+        mental: "Exact algorithmic intuition for vector search, graph routing, and beam search.",
+        topics: [
+          "Dynamic Arrays, Hash Tables, Tries, Suffix Trees", "AVL / Red-Black Trees, Heaps, Priority Queues, Union-Find",
+          "Graphs: BFS, DFS, Topological Sort, Dijkstra, A*, MST", "Dynamic Programming, Greedy, Backtracking, Branch & Bound",
+          "Probabilistic Structures: Bloom Filters & Count-Min Sketch", "Approximate Nearest Neighbors (HNSW, IVF-PQ)",
+          "Parallel & Distributed Algorithms, NP-Completeness"
+        ],
+        frontier: ["DiskANN & billion-scale graph indexing"]
+      }
+    ]
+  },
+  {
+    id: "P1", num: "Phase 1", title: "Pure, Stochastic & Computational Mathematics",
+    short: "Math & Numerical", color: "cyan", prereq: "High School Math", est: "10–12 Weeks",
+    tracks: ["A","B","D","E","G"],
+    mentalModel: "Deep learning is geometry in high-dimensional spaces paired with stochastic optimization. Master how vectors rotate, gradients flow, and probability measures shift.",
+    capstone: "Build a pure NumPy scientific optimization & ODE/SDE solver implementing SVD, Cholesky, L-BFGS, and AdamW from first principles.",
+    modules: [
+      {
+        id: "M1.1", title: "Discrete Math, Logic & Proof Systems",
+        mental: "The formal grammar underlying neuro-symbolic AI and theorem provers.",
+        topics: [
+          "Propositional & Predicate Logic, Quantifiers", "Direct, Contradiction & Mathematical Induction Proofs",
+          "Set Theory, Relations, Equivalence Classes & Lattices", "Combinatorics, Permutations, Generating Functions",
+          "Graph Theory, Trees, Planarity & Recurrence Relations", "Computability, Lambda Calculus & Turing Completeness"
+        ],
+        frontier: ["Dependent Type Theory (Lean 4 foundations)"]
+      },
+      {
+        id: "M1.2", title: "Linear Algebra & Tensor Matrix Calculus",
+        mental: "Every neural layer is an affine map + nonlinearity; backprop is Jacobian chaining.",
+        topics: [
+          "Vector Spaces, Basis, Rank-Nullity, Projections", "Eigenvalues, Spectral Theorem & Diagonalization",
+          "SVD, Pseudoinverse, QR, LU & Cholesky Factorizations", "Covariance Matrices, PCA & Low-Rank Approximations",
+          "Tensor Algebra, Einsum Contractions, Kronecker Products", "Matrix Calculus: Jacobians, Hessians & Matrix Gradients"
+        ],
+        frontier: ["Low-rank tensor decompositions (CP / Tucker)", "Conditioning in deep width limits"]
+      },
+      {
+        id: "M1.3", title: "Calculus, Differential Equations & Optimization Theory",
+        mental: "Training is descending noisy non-convex valleys; diffusion is reversing SDEs.",
+        topics: [
+          "Multivariable Chain Rule, Taylor Series & Saddle Points", "Convex Sets, Jensen's Inequality, Subgradients",
+          "Constrained Optimization: Lagrangians, KKT Conditions, ADMM", "Newton, Quasi-Newton (BFGS, L-BFGS), Conjugate Gradient",
+          "Stochastic Optimization: SGD, Momentum, AdamW, Muon, Lion", "ODEs, PDEs, Neural ODEs & Continuous Normalizing Flows",
+          "Stochastic Calculus: Brownian Motion, Ito's Lemma & SDEs"
+        ],
+        frontier: ["SDEs & Flow Matching for Diffusion", "Second-order / Muon matrix optimizers"]
+      },
+      {
+        id: "M1.4", title: "Probability, Information Theory & Numerical Computing",
+        mental: "Loss functions are information-theoretic divergences disguised as code.",
+        topics: [
+          "Bayes' Theorem, Exponential Families & Conjugate Priors", "MLE, MAP, Fisher Information, Cramér-Rao Bound",
+          "LLN, Central Limit Theorem, Concentration Inequalities", "MCMC, Metropolis-Hastings, Gibbs & Variational Inference",
+          "Entropy, Cross-Entropy, KL / JS Divergence, Mutual Info", "Information Bottleneck & Information Geometry (Natural Grad)",
+          "BLAS/LAPACK, Numerical Stability, Log-Sum-Exp, Cancellation"
+        ],
+        frontier: ["Information Geometry & Fisher-Rao metrics", "Reproducible deterministic floating-point"]
+      }
+    ]
+  },
+  {
+    id: "P2", num: "Phase 2", title: "Data Engineering, Classical ML & Learning Theory",
+    short: "Data & Classical ML", color: "teal", prereq: "Phase 0 + Phase 1", est: "8–10 Weeks",
+    tracks: ["A","C","F","H"],
+    mentalModel: "Models are only as clean as the tokens and tables you feed them. Master tabular baselines and causal structure before reaching for billion-parameter hammers.",
+    capstone: "Build a 50GB+ Polars/Spark pipeline with MinHash deduplication, custom GBDT engine from scratch, causal uplift checks, and exact SHAP attribution.",
+    modules: [
+      {
+        id: "M2.1", title: "Large-Scale Data Engineering & Data-Centric AI",
+        mental: "Garbage in, garbage out—at 15 trillion tokens, data curation IS the secret sauce.",
+        topics: [
+          "Parquet, Arrow, ORC, Avro, Zstd Compression", "SQL Query Plans, B-Trees, LSM-Trees, DuckDB & Polars",
+          "Spark (Catalyst, Shuffles), Kafka Streaming, Airflow/Dagster", "Data Lakes, Warehouses, Iceberg / Delta Lakehouse",
+          "Entity Resolution, MinHash LSH & SemDeDup Deduplication", "Weak Supervision (Snorkel), Active Learning, Inter-Annotator Agreement",
+          "Data Lineage, DVC Versioning, Licensing, PII & Decontamination"
+        ],
+        frontier: ["Web-scale synthetic data flywheels", "Semantic deduplication (SemDeDup)"]
+      },
+      {
+        id: "M2.2", title: "Classical Machine Learning & Tabular SOTA",
+        mental: "On structured tabular data, well-tuned GBDTs still destroy deep nets.",
+        topics: [
+          "Ridge, Lasso, ElasticNet, Logistic Regression (IRLS), Naive Bayes & KNN", "SVMs, Dual Formulations, Kernel Trick, Gaussian Processes",
+          "Decision Trees, Random Forests, Extra Trees & Ensembles (Stacking/Blending)", "Gradient Boosting: XGBoost, LightGBM, CatBoost Internals",
+          "Clustering: K-Means++, GMM / EM, DBSCAN, HDBSCAN & Apriori/FP-Growth", "Dim Reduction: PCA, t-SNE, UMAP; Anomaly: Isolation Forest, One-Class SVM",
+          "Time-Series (ARIMA, Temporal Fusion) & RecSys (Two-Tower, DLRM)", "Feature Selection, Calibration, Class Imbalance & Bayesian Hyperopt"
+        ],
+        frontier: ["TabPFN in-context tabular transformers", "Two-tower retrieval & DLRM scaling"]
+      },
+      {
+        id: "M2.3", title: "Statistical Learning Theory & Causal Inference",
+        mental: "Why overparameterized networks generalize and why correlation fools agents.",
+        topics: [
+          "ERM, SRM, PAC Learning, VC Dimension, Rademacher Complexity", "Bias-Variance Tradeoff, No Free Lunch, Double Descent",
+          "Benign Overfitting & Implicit Regularization", "Distribution Shift: Covariate, Label & Concept Drift",
+          "Pearl's Causal Hierarchy, SCMs, DAGs, d-Separation", "Do-Calculus, Instrumental Variables, Counterfactuals & CATE"
+        ],
+        frontier: ["Double descent & scaling regime transitions", "Causal representation learning"]
+      }
+    ]
+  },
+  {
+    id: "P3", num: "Phase 3", title: "Deep Learning Foundations & Autograd Internals",
+    short: "Deep Learning", color: "emerald", prereq: "Phase 1 + Phase 2", est: "8–10 Weeks",
+    tracks: ["A","B","D","E","G"],
+    mentalModel: "There is no magic in PyTorch—just a dynamic DAG recording tensor ops so the chain rule can walk backward via Vector-Jacobian Products.",
+    capstone: "Build 'MicroTorch': a Python/C++ reverse-mode autograd engine with custom backward kernels, AdamW, mixed precision, and train a ResNet + VAE from scratch.",
+    modules: [
+      {
+        id: "M3.1", title: "Neural Networks From First Principles",
+        mental: "Understanding signal propagation, variance preservation, and gradient highways.",
+        topics: [
+          "Perceptrons, MLPs, Universal Approximation Theorem", "Activations: ReLU, GeLU, SiLU, SwiGLU, Softmax Stability",
+          "Losses: Cross-Entropy, MSE, Huber, Focal, InfoNCE, CTC", "Backprop Chain Rule, Vanishing/Exploding Gradients",
+          "Init Theory: Xavier/Glorot, He/Kaiming, μP (Maximal Update Param)", "Norms: BatchNorm, LayerNorm, RMSNorm, GroupNorm",
+          "Regularization: Dropout, Weight Decay, Residual Connections, Early Stopping"
+        ],
+        frontier: ["μP (Maximal Update Parametrization) hyperparameter transfer"]
+      },
+      {
+        id: "M3.2", title: "PyTorch, JAX & Deep Learning Compiler Internals",
+        mental: "Strides, views, dispatchers, and graph compilation separate pros from API callers.",
+        topics: [
+          "Tensors: Storage, Strides, Contiguous Layouts & Broadcasting", "Forward-Mode (Dual Numbers) vs Reverse-Mode Autodiff (VJP)",
+          "Custom torch.autograd.Function & C++/CUDA Extensions", "Mixed Precision (AMP / BF16), Grad Scaling & Checkpointing",
+          "torch.compile, TorchDynamo, AOTAutograd & TorchInductor", "JAX Functional Transforms: jit, vmap, pmap, shard_map & XLA"
+        ],
+        frontier: ["TorchInductor Triton codegen", "JAX shard_map SPMD execution"]
+      },
+      {
+        id: "M3.3", title: "Foundational Vision, Sequence, Graph & Generative Nets",
+        mental: "Inductive biases before attention unified everything.",
+        topics: [
+          "CNNs, Depthwise Separable Convs, ResNet, ConvNeXt, U-Net", "Object Detection (YOLO, Faster R-CNN) & Segmentation (Mask R-CNN)",
+          "RNNs, BPTT, LSTMs, GRUs, Bidirectional Sequence Models", "Graph Neural Networks: GCN, GAT, MPNN, E(n)-Equivariant GNNs",
+          "Autoencoders, VAEs (ELBO, Reparameterization Trick)", "GANs (WGAN-GP), Normalizing Flows & Energy-Based Models"
+        ],
+        frontier: ["SE(3)-Equivariant geometric networks"]
+      }
+    ]
+  },
+  {
+    id: "P4", num: "Phase 4", title: "Transformers, Pre-Training & Frontier Architectures",
+    short: "Transformers & LLMs", color: "sky", prereq: "Phase 3", est: "10–12 Weeks",
+    tracks: ["A","B","C","D","G"],
+    mentalModel: "Attention is a soft differentiable dictionary lookup; Transformers are only one architecture family alongside State Space Models, Linear Attention, and Diffusion LMs.",
+    capstone: "Pre-train a 150M–1B Llama/DeepSeek-style LLM (RoPE, GQA/MLA, SwiGLU, RMSNorm) on deduplicated web corpus with custom BPE tokenizer & Chinchilla compute tracking.",
+    modules: [
+      {
+        id: "M4.1", title: "NLP Foundations & Tokenization Engineering",
+        mental: "Bad tokenizers silently lobotomize math, code, and non-English reasoning.",
+        topics: [
+          "Morphology, Syntax, NER, POS Tagging, Dependency Parsing & Coreference", "Classical IR (BM25, TF-IDF), Word2Vec, GloVe, FastText & N-grams",
+          "Eval Metrics: Perplexity, BLEU, ROUGE, METEOR & BERTScore",
+          "BPE, Byte-Level BPE (tiktoken), WordPiece, Unigram, SentencePiece", "Tokenizer Fertility, Compression Ratio, Vocabulary Sizing",
+          "Special Tokens, Jinja2 Chat Templates & Byte-Latent Patching (BLT)"
+        ],
+        frontier: ["Tokenizer-free Byte Latent Transformers (BLT)"]
+      },
+      {
+        id: "M4.2", title: "Transformer Mechanics & Long-Context Innovations",
+        mental: "Every attention variant trades off compute, KV-cache memory, and recall fidelity.",
+        topics: [
+          "Scaled Dot-Product Attention, Causal Masks, Encoder/Decoder Families", "MHA, Multi-Query (MQA), Grouped-Query Attention (GQA)",
+          "Multi-Head Latent Attention (MLA — DeepSeek low-rank KV compression)", "Positional Encodings: Sinusoidal, RoPE, ALiBi, NTK, YaRN, LongRoPE",
+          "Pre-Norm vs Post-Norm, RMSNorm, SwiGLU & Logit Soft-Capping", "IO-Aware FlashAttention (v1/v2/v3), Ring Attention, Dual-Chunk"
+        ],
+        frontier: ["DeepSeek MLA KV compression", "FlashAttention-3 FP8 & Ring Attention (1M+ ctx)"]
+      },
+      {
+        id: "M4.3", title: "Pre-Training Pipelines, Data Mixtures & Scaling Laws",
+        mental: "Pre-training is large-scale systems discipline: one silent NaN or bad mixture wastes $1M.",
+        topics: [
+          "CLM, MLM, Denoising & Multi-Token Prediction (MTP) Objectives", "Sequence Packing, Document Masking & Loss Masking",
+          "Web Extraction (CommonCrawl), Quality Classifiers & Contamination Checks", "Curriculum Learning, Annealed Cool-Down & Mid-Training Context Extension",
+          "Kaplan & Chinchilla Compute-Optimal Scaling Laws", "Loss Spikes, Z-Loss, Gradient Norm Monitoring & Ablation Protocols"
+        ],
+        frontier: ["Multi-Token Prediction (MTP) pre-training", "Data annealing & synthetic textbook mixtures"]
+      },
+      {
+        id: "M4.4", title: "Beyond Transformers: SSMs, MoE & Alternative Architectures",
+        mental: "Quadratic attention won't rule forever—master linear-time recurrence and sparse routing.",
+        topics: [
+          "Mixture of Experts (MoE): Top-K Routing, Load Balancing, Auxiliary-Free Bias", "Shared Experts & Fine-Grained Routing (DeepSeekMoE / Switch)",
+          "State Space Models: HiPPO, S4, Mamba & Mamba-2 (SSD Duality)", "Linear Attention, RWKV, RetNet, Lightning Attention & Hybrid SSM-Transformers",
+          "Discrete / Masked Diffusion Language Models (LLaDA)", "Test-Time Training (TTT) Layers & Titans Neural Long-Term Memory",
+          "Universal Transformers, Adaptive Computation, Neural Cellular Automata"
+        ],
+        frontier: ["Auxiliary-loss-free MoE balancing", "Diffusion LLMs, Titans & TTT layers"]
+      }
+    ]
+  }
+];
+</script>
+<script>
+ROADMAP_PHASES.push(
+  {
+    id: "P5", num: "Phase 5", title: "GPU Computing, Distributed Systems, Inference & MLOps",
+    short: "Systems & Infra", color: "amber", prereq: "Phase 0 + Phase 4", est: "10–12 Weeks",
+    tracks: ["B","F","H"],
+    mentalModel: "Compute is expensive; memory bandwidth is scarce. At scale, communication overlap, PagedAttention, and quantization determine whether a system is viable or bankrupt.",
+    capstone: "Write a custom Triton FlashAttention/fused-RMSNorm kernel outperforming eager PyTorch, train across multi-GPU FSDP+TP, and serve FP8 quantized weights via vLLM/SGLang.",
+    modules: [
+      {
+        id: "M5.1", title: "GPU Microarchitecture & Non-NVIDIA Accelerators",
+        mental: "Think in warps, SRAM tiles, and arithmetic intensity—not Python loops.",
+        topics: [
+          "NVIDIA SMs, Warps (32 threads), SIMT & Tensor Cores (Volta → Blackwell)", "HBM3e Global Memory, Shared Memory / L1, Registers & Bank Conflicts",
+          "Occupancy, Memory Coalescing, Roofline Model & Arithmetic Intensity", "Google TPUs (MXU, XLA, Pallas), AMD Instinct (ROCm / CDNA)",
+          "Apple Silicon Unified Memory (Metal / MLX), Cerebras WSE & Groq LPU"
+        ],
+        frontier: ["TPU Pallas & Apple MLX unified kernels", "Blackwell FP4 Tensor Core rooflines"]
+      },
+      {
+        id: "M5.2", title: "CUDA, CUTLASS & OpenAI Triton Kernel Engineering",
+        mental: "Kernel fusion turns memory-bound elementwise chains into single-pass SRAM speedups.",
+        topics: [
+          "CUDA Grids, Blocks, Threads, __syncthreads(), Atomics & Warp Shuffles", "Parallel Reductions, Tiled Matmul, Double Buffering, Async Copies & CUDA Graphs",
+          "OpenAI Triton Block-Level Kernels: Fused Softmax, RMSNorm, Cross-Entropy", "CUTLASS, CuTe Tensor Layouts & ThunderKittens Abstractions",
+          "Profiling: Nsight Systems (Timelines) & Nsight Compute (Roofline / Stall Reasons)"
+        ],
+        frontier: ["CuTe & ThunderKittens warp-group abstractions", "Triton custom FlashAttention kernels"]
+      },
+      {
+        id: "M5.3", title: "Distributed Training & Cluster Fault Tolerance",
+        mental: "Scaling to 10,000 GPUs means network topologies and silent hardware failures rule everything.",
+        topics: [
+          "InfiniBand (NDR), RoCEv2, NVLink / NVSwitch & Collective Ops (NCCL)", "Ring/Tree All-Reduce, All-Gather, Reduce-Scatter, All-to-All",
+          "DDP, ZeRO-1/2/3, FSDP, Megatron Tensor Parallelism", "Pipeline Parallelism (1F1B, Zero-Bubble), Context & Expert Parallelism (5D)",
+          "Slurm, Kubernetes GPU Operators, Elastic Training & Async Checkpointing", "Straggler Mitigation & Silent Data Corruption (SDC) Detection"
+        ],
+        frontier: ["5D Hybrid Parallelism & TorchFT fault tolerance", "Silent Data Corruption (SDC) checks"]
+      },
+      {
+        id: "M5.4", title: "LLM Inference Engines, Quantization & Serving",
+        mental: "Prefill is compute-bound; autoregressive decode is pure memory-bandwidth bound.",
+        topics: [
+          "Prefill vs Decode, TTFT, TPOT, Goodput & Cost-per-Token Economics", "KV Cache Paging (PagedAttention), Prefix Caching & Chunked Prefill",
+          "KV Cache Eviction/Compression (SnapKV, H2O, StreamingLLM)", "Speculative Decoding (Draft Models, Medusa, EAGLE-2/3), Multi-Token Pred",
+          "PTQ vs QAT: INT8, INT4, FP8, NVFP4, GPTQ, AWQ, SmoothQuant, GGUF", "vLLM, SGLang (RadixAttention), TensorRT-LLM, llama.cpp, Disaggregated Serving"
+        ],
+        frontier: ["Disaggregated Prefill/Decode pools", "EAGLE-3 speculative decoding & SGLang RadixAttention"]
+      },
+      {
+        id: "M5.5", title: "Production MLOps, LLMOps & Reliability Engineering",
+        mental: "A model in a notebook is a demo; a versioned, observable, rollback-safe pipeline is a product.",
+        topics: [
+          "CI/CD for ML, Docker, Kubernetes, Terraform / IaC (AWS, GCP, Azure)", "Experiment Tracking (W&B, MLflow), Feature Stores & Model Registries",
+          "REST / gRPC APIs, Canary & Shadow Deployments, A/B Testing, Rollbacks", "Observability: OpenTelemetry Tracing, Prometheus, Grafana, GPU Utilization",
+          "Drift Detection (Data & Concept Drift), SLIs, SLOs, SLAs & Incident Runbooks"
+        ],
+        frontier: ["Full-stack LLM trace telemetry & semantic routing"]
+      }
+    ]
+  },
+  {
+    id: "P6", num: "Phase 6", title: "Post-Training, RL, Alignment & Test-Time Reasoning",
+    short: "Post-Training & RL", color: "indigo", prereq: "Phase 4 + Phase 5", est: "8–10 Weeks",
+    tracks: ["A","C","G"],
+    mentalModel: "Pre-training builds raw knowledge compressed in weights; post-training elicits format, preferences, and System-2 verification loops via Reinforcement Learning.",
+    capstone: "Implement a GRPO + verifiable-reward RL pipeline training a 3B+ model to perform multi-step backtracking and solve math/code unit tests.",
+    modules: [
+      {
+        id: "M6.1", title: "Supervised Fine-Tuning (SFT), PEFT & Model Merging",
+        mental: "SFT teaches format and style; low-rank adapters let you steer weights cheaply.",
+        topics: [
+          "Instruction Tuning, Multi-Turn Chat Serialization & Loss Masking", "Rejection Sampling (RFT), Synthetic Instruction Curation & Quality Filtering",
+          "Catastrophic Forgetting, Continual Learning & Data Mixing Ratios", "LoRA, QLoRA (NF4), DoRA, AdaLoRA, Prefix/Prompt Tuning & Target Selection",
+          "Model Merging: Task Arithmetic, TIES, DARE, SLERP & Evolutionary Merging"
+        ],
+        frontier: ["DARE / TIES weight merging", "DoRA weight-decomposed adaptation"]
+      },
+      {
+        id: "M6.2", title: "Classical & Deep Reinforcement Learning Foundations",
+        mental: "Before doing RL on LLMs, master MDPs, credit assignment, and exploration-exploitation.",
+        topics: [
+          "MDPs, POMDPs, Bellman Equations, Value & Policy Iteration", "Monte Carlo, TD Learning, Q-Learning, SARSA & Deep Q-Networks (DQN)",
+          "Policy Gradients (REINFORCE), Actor-Critic (A2C/A3C), TRPO & PPO", "Continuous Control: DDPG, TD3, SAC; Offline RL (CQL) & Decision Transformers",
+          "Model-Based RL, Imitation Learning, Behavioral Cloning, IRL & Multi-Agent RL"
+        ],
+        frontier: ["Offline-to-online RL & Decision Transformers"]
+      },
+      {
+        id: "M6.3", title: "Preference Alignment (RLHF, DPO & Offline Optimizers)",
+        mental: "Replacing brittle human-labeled reward models with closed-form implicit reward objectives.",
+        topics: [
+          "Bradley-Terry Preference Modeling, Reward Hacking & Goodhart's Law", "RLHF with PPO (Actor, Critic, Reference, Reward in VRAM), GAE & KL Penalty",
+          "Direct Preference Optimization (DPO) Mathematical Derivation", "IPO, KTO, ORPO, SimPO (Reference-Free Alignment) & Constitutional AI / RLAIF"
+        ],
+        frontier: ["Reference-free alignment (SimPO / ORPO)"]
+      },
+      {
+        id: "M6.4", title: "Reasoning Models, GRPO & Test-Time Compute Scaling",
+        mental: "Trading inference-time search tokens for massive jumps in logic, math, and coding accuracy.",
+        topics: [
+          "System 1 vs System 2 Thinking, Chain-of-Thought, Self-Consistency", "Verifiable Rewards (RLVR): Unit-Test Sandboxes, Exact Match & Format Rewards",
+          "GRPO (Group Relative Policy Optimization), RLOO, Reinforce++ & DAPO", "Process Reward Models (PRMs) vs Outcome Reward Models (ORMs)",
+          "Inference Search: Best-of-N, Beam Search, Monte Carlo Tree Search (MCTS)", "Self-Correction, Backtracking & Test-Time Compute Scaling Laws"
+        ],
+        frontier: ["DeepSeek-R1 style pure RLVR & GRPO", "Test-time compute search & PRM step verification"]
+      }
+    ]
+  },
+  {
+    id: "P7", num: "Phase 7", title: "RAG, Autonomous Agents, Multimodal & Physical AI",
+    short: "Agents & Physical AI", color: "violet", prereq: "Phase 5 + Phase 6", est: "10–12 Weeks",
+    tracks: ["C","D","E","H"],
+    mentalModel: "Intelligence becomes truly useful when grounded in external memory, sandboxed tools, continuous audio-visual streams, and real-world physical actuation.",
+    capstone: "Ship an MCP-powered autonomous coding agent inside Firecracker microVMs solving SWE-bench issues, PLUS a Diffusion Policy / VLA controller in MuJoCo/Isaac Sim.",
+    modules: [
+      {
+        id: "M7.1", title: "Industrial Embeddings, Retrieval & Agentic RAG",
+        mental: "Context windows are finite and noisy; hybrid retrieval + reranking delivers verifiable grounding.",
+        topics: [
+          "Dense vs Sparse Bi-Encoders, Cross-Encoder Rerankers, InfoNCE & Hard Negatives", "Vector Indexing: Flat, IVF, HNSW, Product Quantization & Hybrid BM25 + RRF",
+          "Layout-Aware PDF/Table Parsing, Semantic Chunking & Multimodal Retrieval", "Query Rewriting, HyDE, Sub-Query Decomposition, Parent-Child Retrieval",
+          "GraphRAG, Self-RAG, Corrective RAG & RAGAS Evaluation (Faithfulness / Recall)"
+        ],
+        frontier: ["ColPali vision-document retrieval", "Knowledge-Graph + Vector Hybrid GraphRAG"]
+      },
+      {
+        id: "M7.2", title: "Autonomous Agents, Protocols & Secure Sandboxing",
+        mental: "Agents are closed-loop programs with unreliable brains—constrain outputs and sandbox execution.",
+        topics: [
+          "ReAct, Plan-and-Solve, Reflexion, LATS & Hierarchical Task Graphs", "Grammar/CFG-Constrained Decoding & JSON Schema Logit Masking (Outlines)",
+          "Model Context Protocol (MCP) & Agent-to-Agent (A2A) Interoperability", "Agent Memory: Working, Episodic, Semantic & Procedural Consolidation",
+          "Multi-Agent Orchestration (LangGraph, AutoGen), Human-in-the-Loop & Handoffs", "Sandboxing (Docker, Firecracker MicroVMs, gVisor, WASM) & Prompt Injection Defense"
+        ],
+        frontier: ["Anthropic MCP & A2A ecosystems", "MicroVM-isolated SWE-bench autonomous coders"]
+      },
+      {
+        id: "M7.3", title: "Multimodal Intelligence: Vision, Speech, Audio & Diffusion",
+        mental: "Tokenizing pixels, spectrograms, and spatiotemporal patches into unified transformer backbones.",
+        topics: [
+          "VLMs: ViT/SigLIP Encoders, Cross-Attention / Projector Fusion, Any-Res Slicing", "Vision: Optical Flow, Visual Tracking, Depth, Stereo, SfM & Pose Estimation",
+          "Contrastive Pre-Training (CLIP), Visual Grounding & Video Spatiotemporal Attention",
+          "Speech & Audio: Fourier/STFT, Mel-Spectrograms, MFCCs, CTC, RNN-T & Whisper", "TTS & Vocoders: WaveNet, HiFi-GAN, Voice Cloning, Diarization & Music Gen",
+          "Neural Audio Codecs (EnCodec) & Native Omni-Modal Streaming (Voice-to-Voice)",
+          "Generative Diffusion: DDPM, DDIM, Score Matching, Flow Matching (SD3 / Flux)", "Latent Diffusion, ControlNet, Inpainting, Video Diffusion (Sora) & 3D Gaussian Splatting"
+        ],
+        frontier: ["Rectified Flow Matching & Native Omni-modal models", "3D Gaussian Splatting & Real-time Voice-to-Voice"]
+      },
+      {
+        id: "M7.4", title: "Robotics, Control Theory & Embodied Intelligence",
+        mental: "Hardware breaks if control loops jitter—merge deterministic control theory with learned VLA policies.",
+        topics: [
+          "Kinematics, SE(3) Lie Groups, DH Parameters, Jacobians & Rigid-Body Dynamics", "Control Theory: PID, State-Space, LQR, MPC, Kalman Filters (EKF/UKF) & SLAM",
+          "Force/Torque Impedance Control, Grasp Planning & Dexterous Manipulation", "Vision-Language-Action (VLA) Models: RT-2, OpenVLA, Octo & Physical Intel pi0",
+          "Diffusion Policy for Continuous Action Spaces & Behavior Cloning", "Sim-to-Real, Domain Randomization, Isaac Sim, MuJoCo, ROS 2 & Edge Embedded AI"
+        ],
+        frontier: ["VLA models (pi0 / OpenVLA) & Diffusion Policy", "Deterministic RTOS + Edge TensorRT deployment"]
+      }
+    ]
+  },
+  {
+    id: "P8", num: "Phase 8", title: "Frontier Research, Interpretability, Safety & Eval Rigor",
+    short: "Frontier Research", color: "pink", prereq: "All Prior Phases", est: "Ongoing / Mastery",
+    tracks: ["A","G"],
+    mentalModel: "Frontier research begins where recipes end: dissecting polysemantic neurons, simulating world physics, guaranteeing safety, and publishing falsifiable science.",
+    capstone: "Design & benchmark an original intelligence architecture OR train a Top-K Sparse Autoencoder to isolate and surgically steer circuits—publish reproducible code & paper.",
+    modules: [
+      {
+        id: "M8.1", title: "Mechanistic Interpretability & Model Surgery",
+        mental: "Replace black-box guessing with causal circuit tracing and sparse monosemantic dictionaries.",
+        topics: [
+          "Saliency, Integrated Gradients, SHAP, LIME & Residual Stream Mechanics", "Induction Heads, Activation Patching, Causal Tracing & Logit/Tuned Lens",
+          "Superposition Hypothesis & Polysemantic Neurons", "Sparse Autoencoders (TopK, JumpReLU, BatchTopK), Transcoders & Crosscoders",
+          "Attribution Graphs, Steering Vectors, Representation Engineering, ROME/MEMIT Editing"
+        ],
+        frontier: ["Cross-layer Transcoders & Attribution Graphs", "Mechanistic unlearning & activation steering"]
+      },
+      {
+        id: "M8.2", title: "World Models, AI for Science & Alternative Paradigms",
+        mental: "Moving beyond next-word prediction toward physical simulation, formal proofs, and non-gradient learning.",
+        topics: [
+          "Latent World Models: JEPA / V-JEPA, DreamerV3, Genie, Cosmos & Model-Based Planning", "AI for Math & Proofs: Lean 4, Isabelle, Neural-Guided Search & Program Synthesis",
+          "Scientific ML: AlphaFold / Protein Folding, Molecular GNNs, PINNs & Fourier Neural Operators", "Neuro-Symbolic Hybrids, Hypernetworks & Differentiable Programming",
+          "Non-Gradient Paradigms: Evolutionary Computation, Neuroevolution, Hebbian & Local Learning"
+        ],
+        frontier: ["V-JEPA predictive world models", "Lean 4 formal theorem proving & PINNs"]
+      },
+      {
+        id: "M8.3", title: "AI Safety, Adversarial Security & Governance",
+        mental: "Assume models will face adaptive attackers, poisoning, and specification gaming.",
+        topics: [
+          "Alignment Tax, Specification Gaming, Reward Hacking & Goodhart's Law", "Adversarial Examples, Jailbreaks, Automated Red-Teaming (PAIR/TAP) & Sleeper Agents",
+          "Data/Model Poisoning, Backdoors, Extraction, Membership Inference & Inversion", "Privacy-Preserving ML: DP-SGD, Federated Learning & Secure Aggregation",
+          "Supply-Chain Provenance (Safetensors, Sigstore), Model Cards & Regulatory Compliance"
+        ],
+        frontier: ["Constitutional Classifiers & Sleeper-Agent defenses", "CBRN / Autonomous replication safety evals"]
+      },
+      {
+        id: "M8.4", title: "Evaluation Engineering & Scientific Research Methodology",
+        mental: "If you cannot measure without leakage or bias, you are not doing engineering or science.",
+        topics: [
+          "Benchmark Design, Contamination Audits (N-gram / Canary), Statistical Significance", "LLM-as-a-Judge Bias Calibration (Position/Verbosity) & Elo Arenas",
+          "Key Benchmarks: GPQA, MATH, SWE-bench, ARC-AGI, Humanity's Last Exam, Inspect", "Research Method: Hypothesis Formulation, Baselines, Ablations, Negative Results",
+          "LaTeX Scientific Writing, Peer Review, Reproducible Seeds, Ethics & IP / Patents"
+        ],
+        frontier: ["Contamination-resistant dynamic benchmarks (ARC-AGI / SWE-bench Verified)"]
+      }
+    ]
+  }
+);
+
+const SPECIALIZATION_TRACKS = [
+  { id: "A", title: "Frontier LLM Researcher", color: "sky", phases: "P1 · P3 · P4 · P6 · P8", focus: "Pre-training scaling laws, MLA/MoE/SSM architectures, GRPO reasoning, mechanistic interpretability, and novel benchmark evaluation." },
+  { id: "B", title: "AI Systems & Inference Engineer", color: "amber", phases: "P0 · P3 · P4 · P5", focus: "C++/Rust runtimes, CUDA/Triton/CUTLASS kernels, PagedAttention, FP8/FP4 quantization, speculative decoding, and serving engines." },
+  { id: "C", title: "Autonomous Agent Architect", color: "indigo", phases: "P2 · P4 · P6 · P7", focus: "ReAct/LATS planning, MCP/A2A protocols, grammar-constrained outputs, episodic/GraphRAG memory, and Firecracker microVM sandboxing." },
+  { id: "D", title: "Multimodal AI Researcher", color: "violet", phases: "P1 · P3 · P4 · P7", focus: "Vision-Language Models (SigLIP/CLIP), audio codecs, native omni-modal streaming, Rectified Flow Matching, and video diffusion." },
+  { id: "E", title: "Robotics & Embodied Intelligence", color: "emerald", phases: "P0 · P1 · P3 · P7", focus: "SE(3) kinematics, MPC/LQR control theory, SLAM/Gaussian Splatting, Diffusion Policy, VLA models (pi0), Isaac Sim, and ROS 2." },
+  { id: "F", title: "Distributed AI Infrastructure Engineer", color: "teal", phases: "P0 · P2 · P5", focus: "InfiniBand/NVLink clusters, NCCL collectives, 5D parallelism, Slurm/K8s GPU scheduling, SDC fault tolerance, and observability." },
+  { id: "G", title: "Neuro-Symbolic & Alt Intelligence", color: "pink", phases: "P1 · P3 · P4 · P6 · P8", focus: "Formal logic, Lean 4 theorem proving, GNNs, physics-informed nets, evolutionary/Hebbian learning, and JEPA world models." },
+  { id: "H", title: "Applied & Enterprise AI Architect", color: "cyan", phases: "P0 · P2 · P5 · P7", focus: "Lakehouse data pipelines, industrial Hybrid/GraphRAG, PEFT/LoRA, model routing, MLOps/LLMOps, cost economics, and governance." }
+];
+
+const ECOSYSTEM_DATA = [
+  { area: "Systems & Low-Level", tools: "C, C++20, Rust, PyO3, nanobind, LLVM, MLIR, io_uring" },
+  { area: "Math & Numerical", tools: "NumPy, SciPy, SymPy, BLAS/LAPACK, JAX, Einops" },
+  { area: "Data & Classical ML", tools: "SQL, DuckDB, Polars, Apache Spark, Kafka, Dagster, Scikit-Learn, XGBoost, LightGBM, SHAP" },
+  { area: "Deep Learning & Compilers", tools: "PyTorch, torch.compile / Inductor, JAX / XLA, Pallas, TVM, MLX" },
+  { area: "GPU & Distributed Compute", tools: "CUDA, OpenAI Triton, CUTLASS, ThunderKittens, NCCL, MPI, Ray, DeepSpeed, Megatron-LM, Slurm" },
+  { area: "LLM Training & Post-Train", tools: "Hugging Face Transformers, Tokenizers, PEFT, TRL, Unsloth, Axolotl, OpenRLHF, veRL" },
+  { area: "Inference & Serving", tools: "vLLM, SGLang, TensorRT-LLM, llama.cpp, ONNX Runtime, bitsandbytes" },
+  { area: "RAG & Autonomous Agents", tools: "Qdrant, pgvector, Milvus, FAISS, LangGraph, MCP (Model Context Protocol), Outlines, Firecracker" },
+  { area: "Robotics & Multimodal", tools: "ROS 2, NVIDIA Isaac Sim, MuJoCo, Gazebo, OpenCV, Diffusers, OpenVLA" },
+  { area: "Interpretability, Eval & MLOps", tools: "TransformerLens, SAELens, Inspect, lm-eval-harness, Ragas, W&B, MLflow, Docker, K8s, OpenTelemetry" }
+];
+
+const PAPERS_DATA = [
+  { group: "Attention & Core Transformers", items: ["Attention Is All You Need (Vaswani et al., 2017)", "RoFormer: Rotary Position Embedding (Su et al., 2021)", "FlashAttention / FlashAttention-2 / 3 (Dao et al., 2022–2024)"] },
+  { group: "Scaling Laws & Frontier Pre-Training", items: ["Chinchilla Compute-Optimal LLMs (Hoffmann et al., 2022)", "The Llama 3 Herd of Models (Meta AI, 2024)", "DeepSeek-V3 Technical Report: MLA & Aux-Free MoE (2024)"] },
+  { group: "Beyond Transformers & World Models", items: ["Mamba & Mamba-2: Selective State Spaces & SSD (Gu & Dao, 2023–2024)", "V-JEPA & World Models (LeCun / Hafner)", "Learning to (Learn at Test Time): TTT Layers (Sun et al., 2024)"] },
+  { group: "Systems, Distributed & Inference", items: ["Megatron-LM & ZeRO Memory Optimizations (Shoeybi / Rajbhandari)", "Efficient Memory Management with PagedAttention (Kwon et al., 2023)", "EAGLE-2/3: Speculative Sampling"] },
+  { group: "Post-Training, Reasoning & RL", items: ["Direct Preference Optimization (Rafailov et al., 2023)", "DeepSeek-R1: Incentivizing Reasoning via Pure RLVR & GRPO (2025)", "Let's Verify Step by Step: Process Reward Models (Lightman et al., 2023)"] },
+  { group: "Interpretability, Safety & Embodied AI", items: ["Scaling Monosemanticity & Sparse Autoencoders (Anthropic / OpenAI, 2024)", "Diffusion Policy: Visuomotor Policy Learning (Chi et al., 2023)", "pi0: Vision-Language-Action Flow Model (Physical Intelligence, 2024)"] }
+];
+
+const STORAGE_KEY = "ai_frontier_roadmap_progress_v2";
+const TOPIC_SYLLABUS = {};
+
+function loadProgress() {
+  try {
+    return JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+let progressState = loadProgress();
+let completedModules = progressState.modules || {};
+let completedTopics = progressState.topics || {};
+let openPhases = { P0: true, P1: true, P2: true, P3: true, P4: true, P5: true, P6: true, P7: true, P8: true };
+let openTopics = {};
+let allDetailsExpanded = false;
+
+function saveProgress() {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ modules: completedModules, topics: completedTopics }));
+  } catch (e) { /* Sandboxed iframe memory-only fallback */ }
+  updateOverallStats();
+}
+
+function getAllItems(m) {
+  return [...m.topics, ...(m.frontier || [])];
+}
+
+function toggleModule(modId) {
+  const mod = ROADMAP_PHASES.flatMap(p => p.modules).find(m => m.id === modId);
+  const next = !completedModules[modId];
+  if (next) completedModules[modId] = true;
+  else delete completedModules[modId];
+  if (mod) {
+    getAllItems(mod).forEach(t => {
+      const key = modId + "::" + t;
+      if (next) completedTopics[key] = true;
+      else delete completedTopics[key];
+    });
+  }
+  saveProgress();
+  renderPipelineMap();
+  renderRoadmap();
+}
+
+function toggleTopic(modId, idx, isFrontier) {
+  const mod = ROADMAP_PHASES.flatMap(p => p.modules).find(m => m.id === modId);
+  if (!mod) return;
+  const arr = isFrontier ? (mod.frontier || []) : mod.topics;
+  const t = arr[idx];
+  const key = modId + "::" + t;
+  if (completedTopics[key]) delete completedTopics[key];
+  else completedTopics[key] = true;
+
+  const allItems = getAllItems(mod);
+  const allDone = allItems.length > 0 && allItems.every(item => completedTopics[modId + "::" + item]);
+  if (allDone) completedModules[modId] = true;
+  else delete completedModules[modId];
+
+  saveProgress();
+  renderPipelineMap();
+  renderRoadmap();
+}
+
+function toggleTopicDetails(key) {
+  openTopics[key] = !openTopics[key];
+  renderRoadmap();
+}
+
+function toggleAllDetails() {
+  allDetailsExpanded = !allDetailsExpanded;
+  ROADMAP_PHASES.forEach(p => p.modules.forEach(m => {
+    getAllItems(m).forEach(t => {
+      openTopics[m.id + "::" + t] = allDetailsExpanded;
+    });
+  }));
+  const btn = document.getElementById("btn-all-details");
+  if (btn) btn.textContent = allDetailsExpanded ? "Collapse All Syllabi" : "Expand All Syllabi";
+  renderRoadmap();
+}
+
+function getTopicDetails(topic) {
+  if (TOPIC_SYLLABUS[topic]) return TOPIC_SYLLABUS[topic];
+  return topic.split(/[,;&]+/).map(s => s.trim()).filter(Boolean).map(part => "Master core theory, mathematical formulation, and implementation of " + part);
+}
+
+function togglePhase(phaseId) {
+  openPhases[phaseId] = !openPhases[phaseId];
+  renderRoadmap();
+}
+
+function expandAll(state) {
+  ROADMAP_PHASES.forEach(p => openPhases[p.id] = state);
+  renderRoadmap();
+}
+
+function jumpToPhase(phaseId) {
+  switchTab("roadmap");
+  openPhases[phaseId] = true;
+  renderRoadmap();
+  setTimeout(() => {
+    const el = document.getElementById("card-" + phaseId);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 50);
+}
+
+function switchTab(tab) {
+  ["roadmap", "tracks", "milestones", "papers"].forEach(t => {
+    document.getElementById("tab-" + t).classList.toggle("hidden", t !== tab);
+  });
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    const active = btn.dataset.tab === tab;
+    btn.className = active
+      ? "tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm border border-indigo-600"
+      : "tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--background)] text-[var(--foreground)] border border-[var(--border)] hover:border-indigo-500";
+  });
+}
+
+function updateOverallStats() {
+  let modTotal = 0, modDone = 0, topicTotal = 0, topicDone = 0;
+  ROADMAP_PHASES.forEach(p => p.modules.forEach(m => {
+    modTotal++;
+    if (completedModules[m.id]) modDone++;
+    getAllItems(m).forEach(t => {
+      topicTotal++;
+      if (completedTopics[m.id + "::" + t]) topicDone++;
+    });
+  }));
+  const pct = topicTotal ? Math.round((topicDone / topicTotal) * 100) : 0;
+  document.getElementById("done-count").textContent = topicDone;
+  document.getElementById("total-count").textContent = topicTotal;
+  const md = document.getElementById("mod-done-count");
+  const mt = document.getElementById("mod-total-count");
+  if (md) md.textContent = modDone;
+  if (mt) mt.textContent = modTotal;
+  document.getElementById("overall-pct").textContent = pct + "%";
+  const kpi = document.getElementById("kpi-depth");
+  if (kpi) kpi.textContent = ROADMAP_PHASES.length + " Phases · " + modTotal + " Modules · " + topicTotal + " Topics";
+  const ring = document.getElementById("overall-ring");
+  const circumference = 213.6;
+  ring.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+}
+
+function renderPipelineMap() {
+  const container = document.getElementById("pipeline-map");
+  container.innerHTML = ROADMAP_PHASES.map(p => {
+    const pal = PALETTES[p.color];
+    let done = 0, total = 0;
+    p.modules.forEach(m => {
+      getAllItems(m).forEach(t => {
+        total++;
+        if (completedTopics[m.id + "::" + t]) done++;
+      });
+    });
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    return `
+      <button onclick="jumpToPhase('${p.id}')" class="text-left rounded-xl p-2.5 border ${pal.border} ${pal.bg} hover:ring-2 ${pal.ring} transition-all flex flex-col justify-between gap-2">
+        <div class="flex items-center justify-between gap-1">
+          <span class="px-1.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider ${pal.badge}">${p.num}</span>
+          <span class="text-[11px] font-mono font-bold text-[var(--foreground)]">${done}/${total}</span>
+        </div>
+        <div class="text-xs font-bold leading-snug text-[var(--foreground)]">${p.short}</div>
+        <div class="w-full h-2 rounded-full bg-[var(--background)] border border-[var(--border)] overflow-hidden">
+          <div class="h-full ${pal.bar}" style="width:${pct}%"></div>
+        </div>
+      </button>
+    `;
+  }).join("");
+}
+
+function applyFilters() {
+  renderRoadmap();
+}
+
+function renderTopicRow(modId, idx, text, isFrontier, pal, q) {
+  const key = modId + "::" + text;
+  const checked = !!completedTopics[key];
+  const details = getTopicDetails(text);
+  const matchDetail = q && details.some(d => d.toLowerCase().includes(q));
+  const match = q && (text.toLowerCase().includes(q) || matchDetail);
+  const isOpen = !!openTopics[key] || matchDetail;
+  const escapedKey = key.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+
+  return `
+    <li class="rounded-lg border ${checked ? "border-emerald-500/60 bg-emerald-500/10" : (match ? "border-amber-500 bg-amber-500/15" : "border-[var(--border)] bg-[var(--card)]")} transition-colors">
+      <div class="flex items-start justify-between gap-2 px-3 py-2">
+        <label class="flex items-start gap-2.5 cursor-pointer flex-1 min-w-0">
+          <input type="checkbox" ${checked ? "checked" : ""} onchange="toggleTopic('${modId}', ${idx}, ${isFrontier})" class="mt-0.5 w-3.5 h-3.5 accent-emerald-600 rounded shrink-0" />
+          <span class="mt-1.5 w-1.5 h-1.5 rounded-full ${isFrontier ? "bg-pink-500" : pal.dot} shrink-0"></span>
+          <span class="text-xs font-medium leading-relaxed ${checked ? "line-through text-[var(--muted-foreground)]" : "text-[var(--foreground)]"}">
+            ${isFrontier ? `<span class="inline-block px-1.5 py-0.2 rounded text-[10px] font-bold uppercase bg-pink-600 text-white mr-1.5">Frontier</span>` : ""}${text}
+          </span>
+        </label>
+        <button type="button" onclick="toggleTopicDetails('${escapedKey}')" class="shrink-0 px-2 py-0.5 rounded text-[11px] font-semibold border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] hover:border-indigo-500">
+          ${isOpen ? "Hide ▴" : "Syllabus ▾"}
+        </button>
+      </div>
+      ${isOpen ? `
+        <div class="px-3 pb-2.5 pt-1.5 ml-6 border-t border-[var(--border)]/70">
+          <ul class="space-y-1">
+            ${details.map(sub => {
+              const subMatch = q && sub.toLowerCase().includes(q);
+              return `
+                <li class="flex items-start gap-2 text-xs leading-relaxed ${subMatch ? "text-amber-500 font-semibold" : "text-[var(--muted-foreground)]"}">
+                  <span class="mt-1.5 w-1.5 h-1.5 rounded-full border ${isFrontier ? "border-pink-500" : pal.border} shrink-0"></span>
+                  <span>${sub}</span>
+                </li>
+              `;
+            }).join("")}
+          </ul>
+        </div>
+      ` : ""}
+    </li>
+  `;
+}
+
+function renderRoadmap() {
+  const q = (document.getElementById("search-input").value || "").trim().toLowerCase();
+  const onlyNew = document.getElementById("filter-new").checked;
+  const track = document.getElementById("track-highlight").value;
+  const container = document.getElementById("tab-roadmap");
+
+  const html = ROADMAP_PHASES.map(p => {
+    const pal = PALETTES[p.color];
+    const trackMatch = track === "all" || p.tracks.includes(track);
+
+    const filteredMods = p.modules.filter(m => {
+      if (onlyNew && (!m.frontier || m.frontier.length === 0)) return false;
+      if (!q) return true;
+      const allDetails = getAllItems(m).flatMap(t => getTopicDetails(t));
+      const hay = [p.title, m.title, m.mental, ...m.topics, ...(m.frontier || []), ...allDetails].join(" ").toLowerCase();
+      return hay.includes(q);
+    });
+
+    if ((q || onlyNew) && filteredMods.length === 0) return "";
+    if (!trackMatch && track !== "all") return "";
+
+    const isOpen = q || onlyNew || openPhases[p.id];
+    let done = 0, total = 0;
+    p.modules.forEach(m => {
+      getAllItems(m).forEach(t => {
+        total++;
+        if (completedTopics[m.id + "::" + t]) done++;
+      });
+    });
+    const pct = total ? Math.round((done / total) * 100) : 0;
+
+    return `
+      <article id="card-${p.id}" class="phase-card rounded-2xl border ${pal.border} ${pal.top} bg-[var(--card)] overflow-hidden shadow-sm">
+        <div onclick="togglePhase('${p.id}')" class="cursor-pointer p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--border)] hover:bg-[var(--background)]/40">
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold shadow-sm ${pal.badge}">${p.num}</span>
+              <span class="text-xs text-[var(--muted-foreground)]">Prereq: <strong class="text-[var(--foreground)]">${p.prereq}</strong></span>
+              <span class="text-xs text-[var(--muted-foreground)]">• Est: <strong class="text-[var(--foreground)]">${p.est}</strong></span>
+              <span class="text-xs text-[var(--muted-foreground)]">• Tracks: <strong class="font-mono text-[var(--foreground)]">${p.tracks.join(", ")}</strong></span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-extrabold text-[var(--foreground)]">${p.title}</h3>
+          </div>
+          <div class="flex items-center gap-4 shrink-0">
+            <div class="text-right">
+              <div class="text-xs font-mono font-bold ${pal.text}">${done} / ${total} Topics (${pct}%)</div>
+              <div class="w-32 h-2 rounded-full bg-[var(--background)] border border-[var(--border)] mt-1 overflow-hidden">
+                <div class="h-full ${pal.bar}" style="width:${pct}%"></div>
+              </div>
+            </div>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]">${isOpen ? "Hide ▲" : "Open ▼"}</span>
+          </div>
+        </div>
+
+        ${isOpen ? `
+          <div class="p-5 space-y-5">
+            <div class="rounded-xl p-4 ${pal.bg} border ${pal.border} text-xs sm:text-sm leading-relaxed">
+              <span class="font-extrabold uppercase tracking-wider text-xs ${pal.text}">Intuitive Mental Model: </span>
+              <span class="text-[var(--foreground)] font-medium">${p.mentalModel}</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              ${filteredMods.map(m => {
+                const modItems = getAllItems(m);
+                const modDone = modItems.filter(t => completedTopics[m.id + "::" + t]).length;
+                const checked = !!completedModules[m.id] || (modItems.length > 0 && modDone === modItems.length);
+                return `
+                  <div class="rounded-xl border ${checked ? "border-emerald-500 bg-emerald-500/10" : pal.border + " bg-[var(--background)]/60"} p-4 flex flex-col justify-between gap-3">
+                    <div class="space-y-3">
+                      <div class="flex items-start justify-between gap-3">
+                        <label class="flex items-start gap-2.5 cursor-pointer">
+                          <input type="checkbox" ${checked ? "checked" : ""} onchange="toggleModule('${m.id}')" class="mt-1 w-4 h-4 accent-emerald-600 rounded" />
+                          <div>
+                            <span class="inline-block px-1.5 py-0.5 rounded text-[11px] font-mono font-bold ${pal.badge} mb-1">${m.id}</span>
+                            <h4 class="text-sm font-bold leading-snug text-[var(--foreground)] ${checked ? "line-through opacity-60" : ""}">${m.title}</h4>
+                          </div>
+                        </label>
+                        <span class="shrink-0 text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)]">${modDone}/${modItems.length}</span>
+                      </div>
+                      <p class="text-xs text-[var(--muted-foreground)] italic border-l-2 ${pal.border} pl-2.5">${m.mental}</p>
+                      <ul class="space-y-1.5 pt-1">
+                        ${m.topics.map((t, idx) => renderTopicRow(m.id, idx, t, false, pal, q)).join("")}
+                      </ul>
+                    </div>
+                    ${m.frontier && m.frontier.length ? `
+                      <div class="pt-2.5 border-t border-[var(--border)] space-y-1.5">
+                        <div class="text-[11px] font-extrabold uppercase tracking-wider text-pink-500">Frontier Additions</div>
+                        <ul class="space-y-1.5">
+                          ${m.frontier.map((f, idx) => renderTopicRow(m.id, idx, f, true, pal, q)).join("")}
+                        </ul>
+                      </div>
+                    ` : ""}
+                  </div>
+                `;
+              }).join("")}
+            </div>
+
+            <div class="rounded-xl border border-amber-500/50 bg-amber-500/15 p-4 flex items-start gap-3">
+              <span class="px-2.5 py-0.5 rounded text-xs font-extrabold bg-amber-500 text-slate-950 shrink-0 shadow-sm">BUILD GATE</span>
+              <p class="text-xs sm:text-sm text-[var(--foreground)]"><strong>Milestone Capstone:</strong> ${p.capstone}</p>
+            </div>
+          </div>
+        ` : ""}
+      </article>
+    `;
+  }).join("");
+
+  container.innerHTML = html || `<div class="text-center py-12 text-sm text-[var(--muted-foreground)]">No modules matched your current filter. Clear search to view all phases.</div>`;
+}
+
+function renderTracks() {
+  document.getElementById("tab-tracks").innerHTML = `
+    <div class="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 space-y-4">
+      <div>
+        <h2 class="text-lg font-bold">8 Specialization Tracks (Pursue After Phase 4 Core)</h2>
+        <p class="text-xs text-[var(--muted-foreground)]">Do not attempt all 8 tracks concurrently. Complete Phases 0–4 as your shared bedrock, then select one primary track and one secondary complementary track.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        ${SPECIALIZATION_TRACKS.map(t => {
+          const pal = PALETTES[t.color];
+          return `
+            <div class="rounded-xl border ${pal.border} ${pal.top} ${pal.bg} p-4 flex flex-col justify-between gap-3">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded text-xs font-bold ${pal.badge}">Track ${t.id}</span>
+                  <span class="text-xs font-mono font-semibold text-[var(--foreground)]">${t.phases}</span>
+                </div>
+                <h3 class="text-sm font-bold text-[var(--foreground)]">${t.title}</h3>
+                <p class="text-xs text-[var(--foreground)]/80 leading-relaxed">${t.focus}</p>
+              </div>
+              <button onclick="document.getElementById('track-highlight').value='${t.id}'; switchTab('roadmap'); applyFilters();" class="w-full py-1.5 rounded-lg text-xs font-bold ${pal.badge} hover:opacity-90 shadow-sm">
+                Filter Roadmap for Track ${t.id} →
+              </button>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderMilestones() {
+  document.getElementById("tab-milestones").innerHTML = `
+    <div class="space-y-5">
+      <div class="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 space-y-4">
+        <h2 class="text-lg font-bold">Three Levels of True Competence</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="rounded-xl border border-cyan-500/45 border-t-4 border-t-cyan-500 bg-cyan-500/15 p-4 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-cyan-600 text-white font-bold">Level 1: Foundation Builder</span>
+            <p class="text-[var(--foreground)] leading-relaxed">Implement algorithms from mathematical scratch (Autodiff, AdamW, GBDTs, BPE, RoPE Attention) without high-level wrappers.</p>
+          </div>
+          <div class="rounded-xl border border-amber-500/45 border-t-4 border-t-amber-500 bg-amber-500/15 p-4 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold">Level 2: Systems &amp; Production Engineer</span>
+            <p class="text-[var(--foreground)] leading-relaxed">Write custom Triton/CUDA kernels, scale multi-node training (FSDP+TP), serve quantized models with vLLM, and build verifiable eval harnesses.</p>
+          </div>
+          <div class="rounded-xl border border-pink-500/45 border-t-4 border-t-pink-500 bg-pink-500/15 p-4 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-pink-600 text-white font-bold">Level 3: Frontier Researcher</span>
+            <p class="text-[var(--foreground)] leading-relaxed">Formulate falsifiable hypotheses, design novel architectures beyond Transformers, run controlled ablations, and publish reproducible papers.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 space-y-4">
+        <h2 class="text-lg font-bold">2-Year Intensive Execution Timeline</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="rounded-xl border border-slate-500/45 bg-slate-500/10 p-3.5 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-slate-700 text-white font-bold">Y1 Q1 · Phase 0</span>
+            <p class="text-[var(--foreground)]">C/C++/Rust, OS, Memory, Compilers &amp; DSA Tensor Engine.</p>
+          </div>
+          <div class="rounded-xl border border-cyan-500/45 bg-cyan-500/10 p-3.5 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-cyan-600 text-white font-bold">Y1 Q2 · Phase 1</span>
+            <p class="text-[var(--foreground)]">Linear Algebra, Matrix Calc, SDEs, Prob &amp; Numerical Solvers.</p>
+          </div>
+          <div class="rounded-xl border border-emerald-500/45 bg-emerald-500/10 p-3.5 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-emerald-600 text-white font-bold">Y1 Q3–Q4 · Phases 2 &amp; 3</span>
+            <p class="text-[var(--foreground)]">Data Pipelines, Statistical Learning, MicroTorch Autograd &amp; Core Nets.</p>
+          </div>
+          <div class="rounded-xl border border-sky-500/45 bg-sky-500/10 p-3.5 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-sky-600 text-white font-bold">Y2 Q1 · Phase 4</span>
+            <p class="text-[var(--foreground)]">Transformers, FlashAttention, BPE &amp; Pre-training 150M+ LLM + SSMs.</p>
+          </div>
+          <div class="rounded-xl border border-amber-500/45 bg-amber-500/10 p-3.5 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold">Y2 Q2 · Phase 5</span>
+            <p class="text-[var(--foreground)]">CUDA, Triton, NCCL 5D Parallelism, vLLM &amp; Production MLOps.</p>
+          </div>
+          <div class="rounded-xl border border-indigo-500/45 bg-indigo-500/10 p-3.5 space-y-1.5">
+            <span class="inline-block px-2 py-0.5 rounded bg-indigo-600 text-white font-bold">Y2 Q3 · Phases 6 &amp; 7</span>
+            <p class="text-[var(--foreground)]">DPO/GRPO Reasoning, MCP Sandboxed Agents, Multimodal &amp; Robotics.</p>
+          </div>
+          <div class="rounded-xl border border-pink-500/50 bg-pink-500/15 p-3.5 space-y-1.5 sm:col-span-2">
+            <span class="inline-block px-2 py-0.5 rounded bg-pink-600 text-white font-bold">Y2 Q4 · Phase 8 (Final Research Challenge)</span>
+            <p class="text-[var(--foreground)]">Design, implement, ablate, benchmark, and write a paper on an original intelligence architecture or mechanistic SAE discovery.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPapers() {
+  document.getElementById("tab-papers").innerHTML = `
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div class="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 space-y-4">
+        <h2 class="text-lg font-bold">Mandatory Frontier Paper Canon</h2>
+        <div class="space-y-3">
+          ${PAPERS_DATA.map(g => `
+            <div class="rounded-xl border border-indigo-500/35 bg-indigo-500/10 p-3.5 space-y-1.5">
+              <div class="text-xs font-extrabold text-indigo-500 uppercase tracking-wider">${g.group}</div>
+              <ul class="space-y-1 text-xs text-[var(--foreground)] list-disc list-inside">
+                ${g.items.map(i => `<li>${i}</li>`).join("")}
+              </ul>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+      <div class="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 space-y-4">
+        <h2 class="text-lg font-bold">Required Engineering Tool Ecosystem</h2>
+        <div class="space-y-2.5">
+          ${ECOSYSTEM_DATA.map(e => `
+            <div class="rounded-xl border border-cyan-500/35 bg-cyan-500/10 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span class="text-xs font-extrabold text-cyan-500 shrink-0">${e.area}</span>
+              <span class="text-xs font-mono text-[var(--foreground)] sm:text-right">${e.tools}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+Object.assign(TOPIC_SYLLABUS, {
+  "Binary, Hex, Two's complement, Overflow, ASCII & UTF-8": [
+    "Decimal, binary, octal, and hexadecimal base conversions & bit-masking",
+    "Unsigned vs signed integer ranges, two's complement bit negation, and wraparound overflow",
+    "ASCII 7-bit encoding vs Unicode code points and variable-width UTF-8 byte sequences"
+  ],
+  "Boolean Algebra, Logic Gates & IEEE 754 Floats (FP32/16/BF16/FP8/NVFP4)": [
+    "Boolean algebra identities, De Morgan's laws, NAND/NOR universal gates, half/full adders",
+    "IEEE 754 sign, exponent, and mantissa bit splits across FP32 (8+23), FP16 (5+10), BF16 (8+7)",
+    "Subnormals, Inf/NaN bit patterns, dynamic range vs precision tradeoffs in FP8 (E4M3/E5M2) & NVFP4"
+  ],
+  "CPU ALU, Registers, Machine Instructions & Assembly": [
+    "Arithmetic Logic Unit (ALU), control unit, program counter, and fetch-decode-execute cycle",
+    "General-purpose vs vector registers, calling conventions, stack frames, and x86-64 / ARM64 assembly"
+  ],
+  "Pipelining, Branch Prediction, Out-of-Order & SIMD (AVX-512/NEON)": [
+    "Instruction pipelining hazards (data, control, structural) and speculative branch prediction",
+    "Out-of-Order execution, reorder buffers, and SIMD vectorization (AVX-512 / ARM NEON)"
+  ],
+  "L1/L2/L3 Cache Lines, Cache Misses & False Sharing": [
+    "SRAM L1/L2/L3 cache latency hierarchy, 64-byte cache lines, spatial & temporal locality",
+    "Compulsory, capacity, and conflict misses; multi-core false sharing & cache-line padding"
+  ],
+  "Virtual Memory, Page Tables, TLB & NUMA": [
+    "Page tables, Translation Lookaside Buffer (TLB) hits/misses, hugepages, and page faults",
+    "NUMA (Non-Uniform Memory Access) socket pinning and cross-socket bandwidth penalties"
+  ],
+  "Von Neumann vs Harvard Architectures": [
+    "Unified instruction/data bus (Von Neumann bottleneck) vs split instruction/data paths (Harvard)",
+    "How modern modified-Harvard CPUs & systolic NPUs bypass memory walls"
+  ],
+  "PCIe Gen4/5/6, NVLink, Infinity Fabric, CXL": [
+    "PCIe lane bandwidth limits (host-to-device bottlenecks) vs NVLink / NVSwitch chip-to-chip fabrics",
+    "Compute Express Link (CXL) memory pooling and cache-coherent CPU-accelerator sharing"
+  ],
+  "FP8 / NVFP4 hardware formats": [
+    "Microscaling (MXFP8 / NVFP4) block-wise scale factors on Hopper & Blackwell Tensor Cores",
+    "E4M3 (forward pass precision) vs E5M2 (gradient dynamic range) mixed-precision selection"
+  ],
+  "CXL cache-coherent memory": [
+    "CXL.mem and CXL.cache protocols for expanding KV-cache capacity beyond HBM limits",
+    "Tiered memory paging architectures between GPU HBM, host DDR5, and CXL pools"
+  ],
+  "MLIR, LLVM IR, Loop Tiling, Operator Fusion & Graph Lowering": [
+    "Multi-Level IR (MLIR) dialects (linalg, tensor, scf, gpu) and progressive lowering passes",
+    "Polyhedral loop tiling, vectorization, memory-bound operator fusion, and LLVM backend codegen"
+  ],
+  "Python Core: OOP, Dataclasses, Decorators, Generators, Context Managers": [
+    "Classes, inheritance, MRO, polymorphism, ABCs, dataclasses, enums, and descriptor protocol",
+    "Closures, decorators, lazy generator pipelines (`yield`), and `__enter__`/`__exit__` context managers"
+  ],
+  "SVD, Pseudoinverse, QR, LU & Cholesky Factorizations": [
+    "Full vs thin SVD, geometric interpretation (rotate-stretch-rotate), and Moore-Penrose pseudoinverse",
+    "QR (Gram-Schmidt / Householder), LU pivoting, and Cholesky ($LL^T$) for positive-definite covariance matrices"
+  ],
+  "Stochastic Calculus: Brownian Motion, Ito's Lemma & SDEs": [
+    "Wiener processes, quadratic variation, Ito's Lemma, and forward/reverse-time SDEs",
+    "Probability flow ODEs linking diffusion noise schedules to continuous normalizing flows"
+  ],
+  "Entity Resolution, MinHash LSH & SemDeDup Deduplication": [
+    "Shingling, MinHash signatures, and Locality Sensitive Hashing (LSH) for near-duplicate web filtering",
+    "Embedding clustering and semantic deduplication (SemDeDup) to boost pre-training sample efficiency"
+  ],
+  "Forward-Mode (Dual Numbers) vs Reverse-Mode Autodiff (VJP)": [
+    "Jacobian-Vector Products (JVP) with dual numbers vs Vector-Jacobian Products (VJP) adjoint graphs",
+    "Memory vs compute tradeoffs: checkpointing / rematerialization in deep computation DAGs"
+  ],
+  "Multi-Head Latent Attention (MLA — DeepSeek low-rank KV compression)": [
+    "Projecting Keys & Values into a shared low-rank latent vector $c_{KV}$ to shrink KV cache by >80%",
+    "Decoupled RoPE key head + matrix absorption trick during autoregressive inference"
+  ],
+  "IO-Aware FlashAttention (v1/v2/v3), Ring Attention, Dual-Chunk": [
+    "Online softmax rescaling inside GPU SRAM tiles to avoid materializing the $N \\times N$ attention matrix in HBM",
+    "FlashAttention-3 warp specialization + Ring Attention peer-to-peer KV block rotation across nodes"
+  ],
+  "Mixture of Experts (MoE): Top-K Routing, Load Balancing, Auxiliary-Free Bias": [
+    "Router gating networks, Top-K sparse dispatch, expert capacity factors, and token dropping",
+    "Dynamic bias load-balancing (DeepSeek-V3 auxiliary-loss-free) vs traditional auxiliary balance loss"
+  ]
+});
+
+Object.assign(TOPIC_SYLLABUS, {
+  "NVIDIA SMs, Warps (32 threads), SIMT & Tensor Cores (Volta → Blackwell)": [
+    "Streaming Multiprocessor (SM) warp schedulers, 32-thread SIMT lockstep execution, and warp divergence",
+    "MMA / WGMMA Tensor Core matrix units across Volta, Ampere, Hopper, and Blackwell generations"
+  ],
+  "OpenAI Triton Block-Level Kernels: Fused Softmax, RMSNorm, Cross-Entropy": [
+    "Block-level SPMD programming (`tl.program_id`, `tl.load`/`tl.store`, pointer arithmetic, masking)",
+    "Fusing multi-pass reductions (online softmax, RMSNorm + residual, cross-entropy) inside SRAM"
+  ],
+  "DDP, ZeRO-1/2/3, FSDP, Megatron Tensor Parallelism": [
+    "DDP gradient bucketing vs ZeRO-1 (optimizer), ZeRO-2 (+gradients), and ZeRO-3 / FSDP (+weights)",
+    "Megatron-LM column-parallel and row-parallel MLP/Attention weight sharding with minimal all-reduce"
+  ],
+  "KV Cache Paging (PagedAttention), Prefix Caching & Chunked Prefill": [
+    "Virtual-memory block tables mapping non-contiguous physical KV blocks to eliminate fragmentation",
+    "RadixAttention / automatic prefix caching for shared system prompts + chunked prefill scheduling"
+  ],
+  "Speculative Decoding (Draft Models, Medusa, EAGLE-2/3), Multi-Token Pred": [
+    "Draft-then-verify rejection sampling preserving exact target distribution while cutting decode latency",
+    "Feature-level autoregressive draft heads (EAGLE-2/3) & multi-head parallel verification (Medusa)"
+  ],
+  "Direct Preference Optimization (DPO) Mathematical Derivation": [
+    "Closed-form reward reparameterization from KL-constrained RLHF objective into binary cross-entropy loss",
+    "Implicit reward margin $\\beta \\log(\\pi_\\theta / \\pi_{ref})$ and avoiding explicit reward/critic models"
+  ],
+  "GRPO (Group Relative Policy Optimization), RLOO, Reinforce++ & DAPO": [
+    "Sampling groups of $G$ rollouts per prompt and normalizing advantages via group mean/std without a critic",
+    "Clipping surrogate ratio + KL divergence penalty + DAPO dynamic sampling for long CoT stability"
+  ],
+  "Inference Search: Best-of-N, Beam Search, Monte Carlo Tree Search (MCTS)": [
+    "Scoring parallel candidate chains via Outcome/Process Reward Models (ORM/PRM)",
+    "PUCT tree expansion, value backup, and backtracking search over reasoning traces"
+  ],
+  "Model Context Protocol (MCP) & Agent-to-Agent (A2A) Interoperability": [
+    "MCP JSON-RPC client-server architecture exposing standardized Tools, Resources, and Prompts",
+    "A2A capability discovery (`agent.json`), task delegation, streaming status, and multi-agent handoffs"
+  ],
+  "Sandboxing (Docker, Firecracker MicroVMs, gVisor, WASM) & Prompt Injection Defense": [
+    "Hardware-virtualized Firecracker microVMs & gVisor syscall interception for untrusted agent code",
+    "Privilege separation, strict egress firewalls, and indirect prompt injection sanitization"
+  ],
+  "Generative Diffusion: DDPM, DDIM, Score Matching, Flow Matching (SD3 / Flux)": [
+    "Forward Gaussian noising vs reverse denoising ELBO (DDPM) and deterministic DDIM ODE sampling",
+    "Rectified Flow / Conditional Flow Matching learning straight-line velocity fields $v_\\theta(x_t, t)$"
+  ],
+  "Vision-Language-Action (VLA) Models: RT-2, OpenVLA, Octo & Physical Intel pi0": [
+    "Tokenizing continuous 7-DOF robot actions into discrete bins (RT-2/OpenVLA) or flow-matching chunks (pi0)",
+    "Fine-tuning VLM backbones on multi-embodiment teleoperation datasets (Open X-Embodiment)"
+  ],
+  "Diffusion Policy for Continuous Action Spaces & Behavior Cloning": [
+    "Predicting action horizons via conditional denoising diffusion to capture multimodal human behaviors",
+    "Receding-horizon control stability vs MSE regression collapse on bifurcating trajectories"
+  ],
+  "Sparse Autoencoders (TopK, JumpReLU, BatchTopK), Transcoders & Crosscoders": [
+    "Overcomplete dictionary reconstruction solving neuron polysemanticity & superposition",
+    "Top-K & JumpReLU sparsity activations + Transcoders/Crosscoders for cross-layer circuit tracing"
+  ],
+  "Latent World Models: JEPA / V-JEPA, DreamerV3, Genie, Cosmos & Model-Based Planning": [
+    "Predicting masked abstract latent representations (avoiding pixel-level waste) in JEPA / V-JEPA",
+    "Imagination rollouts inside recurrent latent state-space world models (DreamerV3)"
+  ],
+  "Benchmark Design, Contamination Audits (N-gram / Canary), Statistical Significance": [
+    "Paired bootstrap confidence intervals, McNemar's test, and multi-seed variance reporting",
+    "N-gram overlap, perplexity-gap auditing, and dynamic held-out splits to stop benchmark gaming"
+  ]
+});
+
+// Initialize Dashboard
+updateOverallStats();
+renderPipelineMap();
+renderRoadmap();
+renderTracks();
+renderMilestones();
+renderPapers();
+</script>
+</body>
+</html>
