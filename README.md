@@ -35,13 +35,13 @@ Each completed chapter provides **written notes (`.md`)**, an **interactive live
 
 ### Phase 0: Silicon, OS, Compilers & Systems Programming
 
-| Module | Chapter | Notes | Interactive Session | AI Tutor Video |
-| :--- | :--- | :---: | :---: | :---: |
-| **`M0.1`** Computer Architecture & Silicon Foundations | **Ch 01:** Binary, Hex, Two's Complement, Overflow, ASCII & UTF-8 | [Read Ch01](<./Phase 0 - Silicon, OS, Compilers & Systems Programming/M0.1 - Computer Architecture & Silicon Foundations/Ch01 - Binary, Hex, Two's Complement, Overflow, ASCII & UTF-8.md>) | [Live Lesson](<./Phase 0 - Silicon, OS, Compilers & Systems Programming/M0.1 - Computer Architecture & Silicon Foundations/assets/ch01-live-lesson.html>) | [Watch MP4 (3m 33s)](<./Phase 0 - Silicon, OS, Compilers & Systems Programming/M0.1 - Computer Architecture & Silicon Foundations/assets/ch01-infographic-video.mp4>) |
-| **`M0.1`** Computer Architecture & Silicon Foundations | Ch 02–Ch 10 (IEEE 754, ALU, SIMD, Caches, TLB, NVLink, FP8/CXL) | _Upcoming_ | _Upcoming_ | _Upcoming_ |
-| **`M0.2`** Operating Systems, Compilers & IR Lowering | Processes, Syscalls, Atomics, `io_uring`, AST/SSA, MLIR & TVM/XLA | _Upcoming_ | _Upcoming_ | _Upcoming_ |
-| **`M0.3`** Python Mastery & Systems Programming | Python Internals, C/C++20, Rust, `nanobind` / `PyO3`, No-GIL | _Upcoming_ | _Upcoming_ | _Upcoming_ |
-| **`M0.4`** Data Structures, Algorithms & Complexity | Trees, Graphs, DP, Sketches, HNSW / IVF-PQ, DiskANN | _Upcoming_ | _Upcoming_ | _Upcoming_ |
+| Module | Chapter | Open in Browser (`🎬` Video · `💻` Interactive HTML) | Notes |
+| :--- | :--- | :---: | :---: |
+| **`M0.1`** Computer Architecture & Silicon Foundations | [🎬](https://shashankshawak7.github.io/AI-Learning-Journey/Phase%200%20-%20Silicon%2C%20OS%2C%20Compilers%20%26%20Systems%20Programming/M0.1%20-%20Computer%20Architecture%20%26%20Silicon%20Foundations/assets/ch01-infographic-video.mp4 "Watch Video (3m 33s MP4)") [💻](https://shashankshawak7.github.io/AI-Learning-Journey/Phase%200%20-%20Silicon%2C%20OS%2C%20Compilers%20%26%20Systems%20Programming/M0.1%20-%20Computer%20Architecture%20%26%20Silicon%20Foundations/assets/ch01-live-lesson.html "Open Interactive Lesson (HTML)") **Ch 01:** Binary, Hex, Two's Complement, Overflow, ASCII & UTF-8 | [🎬 Video (3m 33s)](https://shashankshawak7.github.io/AI-Learning-Journey/Phase%200%20-%20Silicon%2C%20OS%2C%20Compilers%20%26%20Systems%20Programming/M0.1%20-%20Computer%20Architecture%20%26%20Silicon%20Foundations/assets/ch01-infographic-video.mp4) · [💻 Interactive HTML](https://shashankshawak7.github.io/AI-Learning-Journey/Phase%200%20-%20Silicon%2C%20OS%2C%20Compilers%20%26%20Systems%20Programming/M0.1%20-%20Computer%20Architecture%20%26%20Silicon%20Foundations/assets/ch01-live-lesson.html) | [📖 Read Ch01](<./Phase 0 - Silicon, OS, Compilers & Systems Programming/M0.1 - Computer Architecture & Silicon Foundations/Ch01 - Binary, Hex, Two's Complement, Overflow, ASCII & UTF-8.md>) |
+| **`M0.1`** Computer Architecture & Silicon Foundations | 🎬 💻 Ch 02–Ch 10 (IEEE 754, ALU, SIMD, Caches, TLB, NVLink, FP8/CXL) | _Upcoming_ | _Upcoming_ |
+| **`M0.2`** Operating Systems, Compilers & IR Lowering | 🎬 💻 Processes, Syscalls, Atomics, `io_uring`, AST/SSA, MLIR & TVM/XLA | _Upcoming_ | _Upcoming_ |
+| **`M0.3`** Python Mastery & Systems Programming | 🎬 💻 Python Internals, C/C++20, Rust, `nanobind` / `PyO3`, No-GIL | _Upcoming_ | _Upcoming_ |
+| **`M0.4`** Data Structures, Algorithms & Complexity | 🎬 💻 Trees, Graphs, DP, Sketches, HNSW / IVF-PQ, DiskANN | _Upcoming_ | _Upcoming_ |
 
 ### Phases 1–8 Overview (Modules Ready for Authoring)
 
